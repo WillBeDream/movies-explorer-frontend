@@ -1,0 +1,22 @@
+.account__link {
+    background: url(../../images/profile-icon.svg) 12px center/12px no-repeat;
+    border-radius: 50px;
+    border: 2px solid #E8E8E8;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 12px;
+    color: #000000;
+    padding: 10px 7px 10px 11px;
+    width: 100px;
+    text-decoration: none;
+    margin: 0 auto;
+    text-align: center;
+    width: 90px;
+    margin-top: 621px;
+}
+
+@media screen and (max-width:767px) {
+    .account__link {
+        margin-top: 444px;
+    }
+}
