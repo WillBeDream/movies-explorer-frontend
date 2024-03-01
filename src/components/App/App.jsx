@@ -9,7 +9,6 @@ import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import HamburgerMenu from '../HamburgerMenu/HamburgerMenu';
 import { Route, Routes } from 'react-router-dom';
-import AboutMe from '../AboutMe/AboutMe';
 
 function App() {
   return (
@@ -18,7 +17,7 @@ function App() {
         <Route path='/' element={<Main/>}></Route>
         <Route path='/movies' element={<Movies />}></Route>
         <Route path='/savied-movies' element={<Movies />}></Route>
-        <Route path='/profile' element={<AboutMe/>}></Route>
+        <Route path='/profile' element={<Profile/>}></Route>
         <Route path='/signup' element={<Register/>}></Route>
         <Route path='/signin' element={<Login/>}></Route>
       </Routes>
