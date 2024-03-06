@@ -1,0 +1,19 @@
+.hamburger-menu {
+    display: flex;
+    flex-direction: column;
+    max-width: 520px;
+    padding: 23px 23px 90px;
+    box-sizing: border-box;
+    min-height: 100%;
+}
+
+.hamburger-menu__button-close {
+    background-image: url(../../images/Group.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 22px;
+    height: 22px;
+    border: none;
+    align-self: flex-end;
+    margin-bottom: 106px;
+}

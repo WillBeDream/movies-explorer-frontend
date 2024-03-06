@@ -1,0 +1,16 @@
+.logotip {
+    width: max-content;
+}
+
+.logotip__image {
+    width: 38px;
+    height: 38px;
+    background-image: url(../../images/logotip.svg);
+    background-repeat: no-repeat;
+}
+
+@media screen and (max-width:767px) {
+    .logotip__image {
+        margin: 0 auto;
+    }
+}
