@@ -9,17 +9,21 @@ import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import HamburgerMenu from '../HamburgerMenu/HamburgerMenu';
 import { Route, Routes } from 'react-router-dom';
+import AppLayout from '../AppLayout/AppLayout';
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path='/' element={<Main/>}></Route>
-        <Route path='/movies' element={<Movies />}></Route>
-        <Route path='/savied-movies' element={<Movies />}></Route>
-        <Route path='/profile' element={<Profile/>}></Route>
+        <Route path='/' element={<AppLayout/>}>
+          <Route index element={<Main/>}></Route>
+          <Route path='/profile' element={<Profile/>}></Route>
+          <Route path='/movies' element={<Movies />}></Route> 
+          <Route path='/savied-movies' element={<Movies />}></Route>
+        </Route>
         <Route path='/signup' element={<Register/>}></Route>
         <Route path='/signin' element={<Login/>}></Route>
+        <Route path='/*' element={<NotFound/>}></Route>
       </Routes>
       {/* <Header></Header>
       <Main></Main>

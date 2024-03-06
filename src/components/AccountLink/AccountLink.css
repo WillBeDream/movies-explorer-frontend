@@ -9,14 +9,19 @@
     padding: 10px 7px 10px 11px;
     width: 100px;
     text-decoration: none;
-    margin: 0 auto;
+    margin: 0;
     text-align: center;
     width: 90px;
-    margin-top: 621px;
 }
 
-@media screen and (max-width:767px) {
+@media screen and (max-width:768px) {
+    .account__link {
+        display: none;
+    }
+}
+
+/* @media screen and (max-width:767px) {
     .account__link {
         margin-top: 444px;
     }
-}
+} */

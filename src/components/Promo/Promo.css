@@ -47,6 +47,14 @@
     margin-left: 190px;
 }
 
+.promo__link {
+    text-decoration: none;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+}
+
 @media screen and (max-width: 990px) {
     .promo {
         flex-direction: column-reverse;

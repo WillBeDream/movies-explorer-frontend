@@ -11,6 +11,9 @@ export default function Register() {
                         <label className='form__label'>Имя
                             <input 
                                 className='form__input'
+                                minLength="2"
+                                maxLength="30"
+                                required
                             >
                             </input>
                         </label>
@@ -18,6 +21,7 @@ export default function Register() {
                         <label className='form__label'>E-mail
                             <input 
                                 className='form__input'
+                                required
                             >
                             </input>
                             
@@ -26,6 +30,9 @@ export default function Register() {
                         <label className='form__label'>Пароль
                             <input 
                                 className='form__input'
+                                minLength="2"
+                                maxLength="30"
+                                required
                             >
                             </input>
                         </label>

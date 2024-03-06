@@ -2,21 +2,42 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+}
+
+.navigation_hidden {
+    
 }
 
 .navigation__list {
+    width: 212px;
     display: flex;
-    flex-direction: column;
-    gap: 28px;
-    list-style: none;
+    justify-content: space-between;
+    align-items: center;
     margin: 0;
-    padding: 0;
+    padding-left: 62px;
+    list-style: none;
 }
 
 .navigation__item {
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 22px;
-    text-align: center;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.38;
+    text-decoration: none;
+    color: black;
+}
+
+.navigation__link {
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
+    text-decoration: none;
     color: #000000;
+}
+
+@media screen and (max-width: 767px) {
+    .navigation_hidden {
+        display: none;
+    }
 }

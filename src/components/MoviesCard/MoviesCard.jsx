@@ -7,7 +7,7 @@ export default function MoviesCard() {
             <img 
                 className='movies-card__image' 
                 src={filmPath}
-                alt='film image'
+                alt='постер фильма'
             ></img>
             <div className='movies-card__wrapper'>
                 <p className='movies-card__text'>33 слова о дизайне</p>

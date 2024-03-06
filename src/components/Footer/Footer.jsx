@@ -10,10 +10,10 @@ export default function Footer() {
                 <div className='footer__year'>© 2023</div>
                 <ul className='footer__list'>
                     <li className='footer__list-item'>
-                        <a className='footer__link'>Яндекс.Практикум</a>
+                        <a className='footer__link hover-link'>Яндекс.Практикум</a>
                     </li>
                     <li className='footer__list-item'>
-                        <a className='footer__link'>Github</a>
+                        <a className='footer__link hover-link'>Github</a>
                     </li>
                 </ul>
             </div>

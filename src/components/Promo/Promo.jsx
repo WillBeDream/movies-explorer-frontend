@@ -9,9 +9,11 @@ export default function Promo() {
                 <p className='promo__text'>
                     Листайте ниже, чтобы узнать больше про этот проект и его создателя.
                 </p>
-                <button className='promo__button' type='button'>Узнать больше</button>
+                <button className='promo__button hover-button' type='button'>
+                    <a className='promo__link' href='#about' >Узнать больше</a>
+                </button>
             </div>
-            <img className='promo__image' src={promoImg} alt='web-world'></img>
+            <img className='promo__image' src={promoImg} alt='земной шар'></img>
         </section>
     )
 }

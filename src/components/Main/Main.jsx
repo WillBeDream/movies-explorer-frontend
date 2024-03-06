@@ -9,13 +9,11 @@ import Footer from '../Footer/Footer';
 export default function Main() {
 
     return (
-        <main className='main'>
-            <Header></Header>
+        <main className='main'>    
             <Promo></Promo>
             <AboutProject></AboutProject>
             <Techs></Techs>
             <AboutMe></AboutMe>
-            <Footer></Footer>
         </main>
     )
 }

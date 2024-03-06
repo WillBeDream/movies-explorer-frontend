@@ -12,6 +12,7 @@ export default function Login() {
                         <label className='form__label'>E-mail
                             <input 
                                 className='form__input'
+                                required
                             >
                             </input>
                             
@@ -20,6 +21,9 @@ export default function Login() {
                         <label className='form__label'>Пароль
                             <input 
                                 className='form__input'
+                                minLength="2"
+                                maxLength="30"
+                                required
                             >
                             </input>
                         </label>

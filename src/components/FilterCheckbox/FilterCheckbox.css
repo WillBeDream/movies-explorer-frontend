@@ -2,6 +2,7 @@
     display: flex;
     position: relative;
     margin-top: 33px;
+    
 }
 
 .filter-checkbox__input {
@@ -40,6 +41,6 @@
 
 @media screen and (max-width: 767px) {
     .filter-checkbox {
-        margin: 0 auto;
+        margin: 46px auto;
     }
 }

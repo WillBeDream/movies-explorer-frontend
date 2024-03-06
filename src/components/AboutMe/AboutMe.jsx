@@ -16,8 +16,8 @@ export default function AboutMe() {
                     С 2015 года работал в компании «СКБ Контур». 
                     После того, как прошёл курс по веб-разработке, начал заниматься фриланс-заказами и ушёл с постоянной работы.
                 </p>
-                <p className='about-me__github'>Github</p>
-                <img className='about-me__photo' src={myPhoto} alt='my photo'></img>
+                <p className='about-me__github hover-link'>Github</p>
+                <img className='about-me__photo' src={myPhoto} alt='мое фото'></img>
             </div>
             <Portflio></Portflio>
             
