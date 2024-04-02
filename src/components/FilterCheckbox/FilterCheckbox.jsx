@@ -5,11 +5,11 @@ export default function FilterCheckbox() {
         <label className='filter-checkbox'>
             <span className='filter-checkbox__switch'></span>
             <input 
-                className='filter-checkbox__input' 
+                className='filter-checkbox__toggle' 
                 type='checkbox'
-                name='filter'
+                name='toggle'
+                
             />Короткометражки
-            
         </label>
     )
 }

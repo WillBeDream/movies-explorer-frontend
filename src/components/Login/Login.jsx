@@ -7,8 +7,6 @@ export default function Login() {
             <AuthWindow>
                 <section className='form__wrapper'>
                     <form className='form' name='login'>
-                        
-                        <span className='form__input_error'></span>
                         <label className='form__label'>E-mail
                             <input 
                                 className='form__input'
@@ -29,7 +27,7 @@ export default function Login() {
                         </label>
                         <span className='form__input_error'>fsfsfsf</span>
                         <button 
-                            className='form__button form__button_register'
+                            className='form__button form__button_login'
                             type='submit'
                             form='register'
                         >Войти</button>

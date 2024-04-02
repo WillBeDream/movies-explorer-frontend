@@ -25,4 +25,15 @@
     .auth-window {
         padding: 56px 30px 30px;
     }
+
+    .auth-window__text {
+        font-size: 12px;
+        line-height: 15px;
+    }
+
+    .auth-window__link {
+        font-size: 12px;
+        line-height: 15px;
+    }
+
 }

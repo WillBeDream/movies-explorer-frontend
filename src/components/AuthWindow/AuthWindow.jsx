@@ -1,6 +1,7 @@
 import './AuthWindow.css'
 import Logotip from '../Logotip/Logotip'
 import AuthTitle from '../AuthTitle/AuthTitle'
+import { Link } from "react-router-dom";
 
 export default function AuthWindow({...props}) {
     return (
@@ -10,7 +11,7 @@ export default function AuthWindow({...props}) {
             {props.children}
             <p className='auth-window__text'>
                 Уже зарегистрированы?
-                <a className='auth-window__link'>Войти</a>
+                <Link to= {'/signin'} className='auth-window__link'>Войти</Link>
             </p>
         </section>
     )

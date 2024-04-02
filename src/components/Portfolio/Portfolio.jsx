@@ -21,13 +21,14 @@ export default function Portflio() {
                         className='portfolio__link hover-link' 
                         href='https://willbedream.github.io/russian-travel/'
                         target="_blank"
+                        rel='noreferrer'
                     >
                         <p className='portfolio__text'>Адаптивный сайт</p>
                         <img className='portfolio__img' src={arrowImg}></img>
                     </a>
                 </li>
                 <li className='portfolio__item'>
-                    <a 
+                    <a
                         className='portfolio__link hover-link'
                         href='http://normal.nomoredomainsmonster.ru/'
                         target="_blank"

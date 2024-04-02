@@ -1,6 +1,6 @@
 .profile {
     max-width: 1280px;
-    padding: 74px 0px 70px;
+    padding: 34px 0px 70px;
 }
 
 .profile__wrapper {
@@ -33,12 +33,22 @@
     color: #FF3055;
 }
 
-@media screen and (max-width:767px) {
+@media screen and (max-width:990px) {
     .profile {
-        padding: 70px 30px 40px;
+        padding-top: 197px;
     }
 
     .profile__wrapper-actions {
-        margin-top: 380px;
+        margin-top: 195px;
+    }
+}
+
+@media screen and (max-width:767px) {
+    .profile {
+        padding: 20px 30px 40px;
+    }
+
+    .profile__wrapper-actions {
+        margin-top: 365px;
     }
 }

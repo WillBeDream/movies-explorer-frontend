@@ -82,6 +82,10 @@
     .promo__button {
         margin-top: 92px;
     }
+
+    .promo__image {
+        margin: 0 auto;
+    }
 }
 
 @media screen and (max-width: 767px) {

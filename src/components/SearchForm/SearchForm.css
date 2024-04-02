@@ -5,6 +5,8 @@
 
 .search-form__form {
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .search-form__input {
@@ -37,8 +39,22 @@
     border-bottom: 1px solid #3456F3;
 }
 
+@media screen and (max-width:990px) {
+    .search-form {
+        padding: 80px 30px 60px;
+    }
+
+    
+}
+
 @media screen and (max-width: 767px) {
     .search-form {
         padding: 90px 14px 51px;
     }
+
+    .search-form__input {
+        font-size: 18px;
+        padding-bottom: 9px;
+    }
 }
+

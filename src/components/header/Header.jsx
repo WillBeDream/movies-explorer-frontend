@@ -10,8 +10,8 @@ export default function Header() {
     return (
         <header className="header">
             {location.pathname === "/" ? (
-                <div className={`header__wrapper ${location.pathname === '/' ? 'header_main-color' : ''}`}>
-                    <div className="header__logo hover-link"></div>
+                <div className={`header__wrapper ${location.pathname === '/' ? 'header__wrapper_main-color' : ''}`}>
+                    <Link to={'/'} className="header__logo hover-link"></Link>
                     <div className="header__menu">
                         <Link to={'/signup'} className="header__link header__link_link hover-button">Регистрация</Link>
                         <Link to={'/signin'} className="header__link header__link_button hover-button">Войти</Link>

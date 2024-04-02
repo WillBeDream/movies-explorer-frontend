@@ -4,3 +4,11 @@
     line-height: 29px;
     margin: 40px 0px 40px;
 }
+
+@media screen and (max-width: 767px) {
+    .auth-title {
+        margin-top: 50px;
+        margin-bottom: 80px;
+        text-align: center;
+    }
+} 

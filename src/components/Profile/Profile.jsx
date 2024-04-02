@@ -7,15 +7,15 @@ export default function Profile() {
             <section className='profile__wrapper'>
                 <AuthTitle className='profile__title'></AuthTitle>
                 <form className='form form_edit_profile' name='edit-profile'>
-                    <label className='form__label'>Имя
+                    <label className='form__label form__label_edit-profile'>Имя
                         <input 
-                            className='form__input'
+                            className='form__input form__input_edit-profile'
                         >
                         </input>
                     </label>
                     <label className='form__label form__label_edit-profile'>E-mail
                         <input 
-                            className='form__input'
+                            className='form__input form__input_edit-profile'
                         >
                         </input>
                     </label>

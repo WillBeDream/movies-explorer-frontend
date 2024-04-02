@@ -3,16 +3,17 @@
 }
 
 .about-me__wrapper {
-    column-gap: 555px;
+    grid-column-gap: 50px;
     display: grid;
     grid-template-rows: repeat(4, max-content);
     grid-template-columns: repeat(2, 270px);
-    
+    justify-content: space-between;
     grid-template-areas: 
     'name img'
     'work img'
     'text img'
     'github img';
+    
     
 }
 
@@ -22,6 +23,7 @@
     line-height: 58px;
     margin: 66px 0px 0px;
     grid-area: name;
+    letter-spacing: -0.04em;
 }
 
 .about-me__subtitle {
@@ -48,6 +50,7 @@
     margin: 100px 0px 0px;
     font-weight: 500;
     grid-area: github;
+    text-decoration: none;
 }
 
 .about-me__photo {
@@ -58,29 +61,35 @@
 
 @media screen and (max-width: 990px) {
     .about-me {
-        padding: 90px 60px;
+        padding: 90px 50px;
     }
 
     .about-me__wrapper {
-        column-gap: 150px;
+        grid-template-columns: minmax(292px, 600px) 255px;
+        grid-template-rows: repeat(3, min-content) 1fr;
     }
 
     .about-me__title {
-        font-size: 30px;
-        line-height: 37px;
+        font-size: 40px;
+        line-height: 40px;
+        
     }
 
     .about-me__subtitle {
-        font-size: 11px;
-        line-height: 17px;
+        font-size: 12px;
+        line-height: 18px;
+        margin-top: 16px;
     }
 
     .about-me__text {
         width: 364px;
+        font-size: 12px;
+        line-height: 18px;
+        margin-top: 20px;
     }
 
     .about-me__github {
-        margin-top: 40px;
+        margin-top: 87px;
     }
 
     .about-me__photo {
@@ -103,10 +112,20 @@
         'text'
         'github';
         grid-template-columns: none;
+        justify-content: center;
+    }
+
+    .about-me__title {
+        font-size: 30px;
+        line-height: 37px;
+        margin-top: 40px;
     }
 
     .about-me__subtitle {
         width: 292px;
+        font-size: 11px;
+        line-height: 16px;
+        margin-top: 20px;
     }
 
     .about-me__text {
@@ -115,9 +134,15 @@
         width: 292px;
     }
 
+    .about-me__github {
+        margin-top: 40px;
+    }
+
     .about-me__photo {
         justify-self: center;
         width: 292px;
+        margin-top: 60px;
+        height: 352px;
     }
 }
 

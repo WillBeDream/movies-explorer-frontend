@@ -5,6 +5,7 @@
 .about-project__wrapper {
     display: flex;
     margin-top: 70px;
+    gap: 53px;
 }
 
 .about-project__wrapper-column {
@@ -16,6 +17,7 @@
     font-size: 20px;
     font-weight: 400;
     line-height: 24px;
+    letter-spacing: -0.04em;
 }
 
 .about-project__text {
@@ -67,8 +69,18 @@
         padding: 90px 50px;
     }
 
+    .about-project__wrapper {
+        gap: 37px;
+    }
+
     .about-project__wrapper-timeline {
         margin-top: 93px;
+    }
+
+    .about-project__text {
+        font-size: 12px;
+        line-height: 1.5;
+        margin-top: 22px;
     }
 }
 
