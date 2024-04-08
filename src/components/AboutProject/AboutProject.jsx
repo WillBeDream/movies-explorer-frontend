@@ -6,7 +6,7 @@ export default function AboutProject() {
             <h2 className="section-title">О проекте</h2>
             <div className='about-project__wrapper'>
                 <div className='about-project-column'>
-                    <h2 className='about-project__subtitle'>Дипломный проект включал 5 этапов</h2>
+                    <h3 className='about-project__subtitle'>Дипломный проект включал 5 этапов</h3>
                     <p className='about-project__text'>
                         Составление плана, работу над бэкендом, вёрстку, добавление функциональности и финальные доработки.
                     </p>
@@ -19,11 +19,11 @@ export default function AboutProject() {
                 </div>
             </div>
             <div className='about-project__wrapper-timeline'>
-                    <div className='about-project__wrapper_first'>
+                    <div className='about-project__wrapper-stage about-project__wrapper-stage_first'>
                         <p className='about-project__week about-project__week_type_special'>1 неделя</p>
                         <p className='about-project__tech'>Back-end</p>
                     </div>
-                    <div className='about-project__wrapper_second'>
+                    <div className='about-project__wrapper-stage about-project__wrapper-stage_second'>
                         <p className='about-project__week'>4 недели</p>
                         <p className='about-project__tech'>Front-end</p>
                     </div>

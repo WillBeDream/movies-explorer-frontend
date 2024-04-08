@@ -10,13 +10,12 @@ export default function SearchForm() {
                     placeholder='Фильм'
                     name="search"
                     type="search"
-                    action="#"
-                    noValidate
+                    required
                 >
 
                 </input>
                 <button 
-                    className='search-form__button'
+                    className='search-form__button hover-button'
                     type="submit"
                     form="search-and-filter"
                 >

@@ -5,6 +5,10 @@
     justify-content: center;
 }
 
+.navigation_active {
+    display: flex;
+}
+
 .navigation_hidden {
     
 }
@@ -17,6 +21,12 @@
     margin: 0;
     padding-left: 62px;
     list-style: none;
+}
+
+.navigation__list_direction_column {
+    flex-direction: column;
+    gap: 28px;
+    padding-left: 0;
 }
 
 .navigation__item {
@@ -36,8 +46,20 @@
     color: #000000;
 }
 
+.navigation__link_place_side_menu {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 22px;
+}
+
 @media screen and (max-width: 767px) {
     .navigation_hidden {
         display: none;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .navigation__list_direction_column {
+        gap: 24px;
     }
 }

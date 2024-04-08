@@ -9,6 +9,11 @@
     text-decoration: none;
 }
 
+.account-link_active {
+    display: flex;
+    margin-top: auto;
+}
+
 .account-link__text {
     margin: 0;
     font-size: 14px;
@@ -27,7 +32,7 @@
 
 
 @media screen and (max-width:768px) {
-    .account-link {
+    .account-link_hidden {
         display: none;
     }
 }

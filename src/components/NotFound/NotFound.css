@@ -32,6 +32,7 @@
     font-weight: 400;
     color: #3456F3;
     margin: 184px 0px 0px;
+    text-decoration: none;
 }
 
 @media screen and (max-width:990px) {

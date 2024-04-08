@@ -4,7 +4,7 @@ import arrowImg from '../../images/arrow.svg';
 export default function Portflio() {
     return (
         <div className='portfolio'>
-            <h1 className='portfolio__title'>Портфолио</h1>
+            <h4 className='portfolio__title'>Портфолио</h4>
             <ul className='portfolio__list'>
                 <li className='portfolio__item'>
                     <a 
@@ -13,7 +13,7 @@ export default function Portflio() {
                         target="_blank"
                     >
                         <p className='portfolio__text'>Статичный сайт</p>
-                        <img className='portfolio__img' src={arrowImg}></img>
+                        <p className='portfolio__img'>&#x2197;</p>
                     </a>
                 </li>
                 <li className='portfolio__item'>
@@ -24,7 +24,7 @@ export default function Portflio() {
                         rel='noreferrer'
                     >
                         <p className='portfolio__text'>Адаптивный сайт</p>
-                        <img className='portfolio__img' src={arrowImg}></img>
+                        <p className='portfolio__img'>&#x2197;</p>
                     </a>
                 </li>
                 <li className='portfolio__item'>
@@ -34,7 +34,7 @@ export default function Portflio() {
                         target="_blank"
                     > 
                         <p className='portfolio__text'>Одностраничное приложение</p>
-                        <img className='portfolio__img' src={arrowImg}></img>
+                        <p className='portfolio__img'>&#x2197;</p>
                     </a>
                 </li>
             </ul>

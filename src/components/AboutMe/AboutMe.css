@@ -51,6 +51,7 @@
     font-weight: 500;
     grid-area: github;
     text-decoration: none;
+    color: #000000;
 }
 
 .about-me__photo {

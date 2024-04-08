@@ -31,6 +31,12 @@
 
 .profile__button_exit {
     color: #FF3055;
+    text-decoration: none;
+}
+
+.profile__exit-link {
+    color: #FF3055;
+    text-decoration: none;
 }
 
 @media screen and (max-width:990px) {

@@ -14,33 +14,36 @@ export default function Register() {
                                 minLength="2"
                                 maxLength="30"
                                 required
+                                placeholder='Введите имя'
                             >
                             </input>
                         </label>
-                        <span className='form__input_error'></span>
+                        <span className='form__input-error'></span>
                         <label className='form__label'>E-mail
                             <input 
                                 className='form__input'
+                                placeholder='Введите почту'
                                 required
                             >
                             </input>
                             
                         </label>
-                        <span className='form__input_error'></span>
+                        <span className='form__input-error'></span>
                         <label className='form__label'>Пароль
                             <input 
                                 className='form__input'
                                 minLength="2"
                                 maxLength="30"
+                                placeholder='Введите пароль'
                                 required
                             >
                             </input>
                         </label>
-                        <span className='form__input_error'>fsfsfsf</span>
+                        <span className='form__input-error'>fsfsfsf</span>
                         <button 
-                            className='form__button form__button_register'
+                            className='form__button form__button_register hover-button'
                             type='submit'
-                            form='register'
+                            
                         >Зарегистрироваться</button>
 
                     </form>
