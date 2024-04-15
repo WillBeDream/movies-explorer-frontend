@@ -1,20 +1,31 @@
-import './HamburgerMenu.css'
-import Navigation from '../Navigation/Navigation'
-import AccountLink from '../AccountLink/AccountLink'
+// IMPORT STYLES
+import "./HamburgerMenu.css";
 
-export default function HamburgerMenu({isSideMenuOpen, onClose}) {
-    return (
-        <div className={`overlay ${isSideMenuOpen ? 'overlay_active':''}`}>
-            <div className={`hamburger-menu ${isSideMenuOpen ? 'hamburger-menu_active': ''}`}>
-                <button 
-                    className='hamburger-menu__button-close'
-                    type='button'
-                    onClick={onClose}
-                ></button>
-                <p className='hamburger-menu__title'>Главная</p>
-                <Navigation isSideMenu={true} onClose={onClose}></Navigation>
-                <AccountLink isSideMenu={true} onClose={onClose}></AccountLink>
-            </div>
-        </div>
-    )
+// IMPORT COMPONENTS
+import Overlay from "../Overlay/Overlay";
+import AccountLink from "../AccountLink/AccountLink";
+import Navigation from "../Navigation/Navigation";
+
+// HAMBURGER MENU COMPONENT
+function HamburgerMenu({ isSideMenuOpen, onClose }) {
+  return (
+    <Overlay isActive={isSideMenuOpen} onClose={onClose}>
+      <div
+        className={`hamburger-menu ${
+          isSideMenuOpen ? "hamburger-menu_active" : ""
+        }`}
+      >
+        <button
+          className="hamburger-menu__btn-close hover-button"
+          type="button"
+          aria-label="Закрыть меню"
+          onClick={onClose}
+        ></button>
+        <Navigation isSideMenu={true} onClose={onClose} />
+        <AccountLink isSideMenu={true} onClose={onClose} />
+      </div>
+    </Overlay>
+  );
 }
+
+export default HamburgerMenu;

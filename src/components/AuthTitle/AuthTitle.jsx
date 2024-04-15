@@ -1,12 +1,17 @@
-import {useLocation} from 'react-router-dom'
-import './AuthTitle.css';
+// IMPORT STYLES
+import "./AuthTitle.css";
 
-export default function AuthTitle() {
-    const location = useLocation()
-    return (
-        
-        <h1 className='auth-title auth-title_type_reg-login'>
-            Привет, Виталий!
-        </h1>
-    )
+// AUTH TITLE COMPONENT
+function AuthTitle({ title, place }) {
+  return (
+    <h1
+      className={`auth-title ${
+        place === "edit-profile" ? "auth-title_place_edit-profile" : ""
+      }`}
+    >
+      {title}
+    </h1>
+  );
 }
+
+export default AuthTitle;

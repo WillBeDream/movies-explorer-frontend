@@ -1,41 +1,81 @@
+// IMPORT PACKAGES
 import { Link, useLocation } from "react-router-dom";
-import './Navigation.css'
 
-export default function Navigation({isSideMenu, onClose}) {
-    return (
-        // <nav className='navigation'>
-        //     <ul className='navigation__list'>
-        //         <li className='navigation__item'>
-        //             <a className='navigation__link'>Главная</a>
-        //         </li>
-        //         <li className='navigation__item'>
-        //             <a className='navigation__link'>Фильмы</a>
-        //         </li>
-        //         <li className='navigation__item'>
-        //             <a className='navigation__link'>Сохраненный фильмы</a>
-        //         </li>
-        //     </ul>
-        // </nav>
-        <nav className={`navigation ${isSideMenu? 'navigation_active': 'navigation_hidden'}`}>
-            <ul className={`navigation__list ${isSideMenu ? 'navigation__list_direction_column' : ''}`}>
-                <li className='navigation__item'>
-                    <Link to='/movies' 
-                    className={`navigation__link
-                     ${isSideMenu ? 'navigation__link_place_side_menu' :''} 
-                     hover-link`}>
-                        Фильмы
-                    </Link>
-                </li>
-                <li className='navigation__item'>
-                    <Link to='/saved-movies' 
-                    className={`navigation__link 
-                    ${isSideMenu ? 'navigation__link_place_side_menu' : ''} 
-                    hover-link`}>
-                        Сохраненные фильмы
-                    </Link>
-                </li>
-            </ul>
+// IMPORT STYLES
+import "./Navigation.css";
 
-        </nav>
-    )
+// NAVIGATION COMPONENT
+function Navigation({ isSideMenu, onClose }) {
+  // HOOKS
+  const location = useLocation();
+
+  return (
+    <nav className={`navigation ${isSideMenu ? "" : "navigation_hidden"}`}>
+      <ul
+        className={`navigation__menu-wrapper ${
+          isSideMenu ? "navigation__menu-wrapper_direction_column" : ""
+        }`}
+      >
+        <li
+          className={`navigation__menu-item ${
+            isSideMenu ? "" : "navigation__menu-item_hidden"
+          }`}
+        >
+          <Link
+            to="/"
+            onClick={onClose}
+            className={`navigation__link ${
+              isSideMenu ? "navigation__link_place_side-menu" : ""
+            } ${
+              location.pathname === "/" && isSideMenu
+                ? "navigation__link_place_side-menu-active"
+                : ""
+            } hover-link`}
+          >
+            Главная
+          </Link>
+        </li>
+        <li className="navigation__menu-item">
+          <Link
+            to="/movies"
+            onClick={onClose}
+            className={`navigation__link ${
+              isSideMenu ? "navigation__link_place_side-menu" : ""
+            } ${
+              location.pathname === "/movies" && !isSideMenu
+                ? "navigation__link_place_header-active"
+                : ""
+            } ${
+              location.pathname === "/movies" && isSideMenu
+                ? "navigation__link_side-menu-active"
+                : ""
+            } hover-link`}
+          >
+            Фильмы
+          </Link>
+        </li>
+        <li className="navigation__menu-item">
+          <Link
+            to="/saved-movies"
+            onClick={onClose}
+            className={`navigation__link ${
+              isSideMenu ? "navigation__link_place_side-menu" : ""
+            } ${
+              location.pathname === "/saved-movies" && !isSideMenu
+                ? "navigation__link_place_header-active"
+                : ""
+            } ${
+              location.pathname === "/saved-movies" && isSideMenu
+                ? "navigation__link_place_side-menu-active"
+                : ""
+            } hover-link`}
+          >
+            Сохранённые фильмы
+          </Link>
+        </li>
+      </ul>
+    </nav>
+  );
 }
+
+export default Navigation;

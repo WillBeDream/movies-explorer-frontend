@@ -1,19 +1,35 @@
-import './Promo.css';
-import promoImg from '../../images/promo-img.svg';
+// IMPORT STYLES
+import "./Promo.css";
 
-export default function Promo() {
-    return (
-        <section className='promo'>
-            <div className='promo__wrapper'>
-                <h1 className='promo__title'>Учебный проект студента факультета Веб-разработки.</h1>
-                <p className='promo__text'>
-                    Листайте ниже, чтобы узнать больше про этот проект и его создателя.
-                </p>
-                <button className='promo__button hover-button' type='button'>
-                    <a className='promo__link' href='#about' >Узнать больше</a>
-                </button>
-            </div>
-            <img className='promo__image' src={promoImg} alt='земной шар'></img>
-        </section>
-    )
+// IMPORT IMAGES
+import hero from "../../images/hero-logo.svg";
+
+// IMPORT UTILS
+import { handleScrollEffect } from "../../utils/utils";
+
+// PROMO COMPONENT
+function Promo({ aboutRef }) {
+  return (
+    <section className="promo">
+      <div className="promo__text-wrapper">
+        <h1 className="promo__title">
+          Учебный проект студента факультета Веб&#8209;разработки.
+        </h1>
+        <p className="promo__text">
+          Листайте ниже, чтобы узнать больше про этот проект и&nbsp;его
+          создателя.
+        </p>
+        <button
+          className="promo__btn-anchor hover-button"
+          type="button"
+          onClick={() => handleScrollEffect(aboutRef)}
+        >
+          Узнать больше
+        </button>
+      </div>
+      <img className="promo__img" src={hero} alt="земной шар" />
+    </section>
+  );
 }
+
+export default Promo;

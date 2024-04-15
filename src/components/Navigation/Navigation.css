@@ -1,65 +1,61 @@
-.navigation {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.navigation__menu-wrapper {
+  width: 212px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding-left: 62px;
+  list-style: none;
 }
 
-.navigation_active {
-    display: flex;
+.navigation__menu-wrapper_direction_column {
+  width: 100%;
+  flex-direction: column;
+  gap: 28px;
+  padding-left: 0;
 }
 
-.navigation_hidden {
-    
-}
-
-.navigation__list {
-    width: 212px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0;
-    padding-left: 62px;
-    list-style: none;
-}
-
-.navigation__list_direction_column {
-    flex-direction: column;
-    gap: 28px;
-    padding-left: 0;
-}
-
-.navigation__item {
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 1.38;
-    text-decoration: none;
-    color: black;
+.navigation__menu-item_hidden {
+  display: none;
 }
 
 .navigation__link {
-    color: var(--white);
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 18px;
-    text-decoration: none;
-    color: #000000;
+  font-family: var(--main-font);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.38;
+  text-decoration: none;
+  color: var(--black);
+  transition: var(--opacity);
 }
 
-.navigation__link_place_side_menu {
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 22px;
+.navigation__link_side-menu {
+  font-size: 18px;
+  font-weight: 500;
+  padding-bottom: 4px;
+  line-height: 1.22;
 }
 
-@media screen and (max-width: 767px) {
-    .navigation_hidden {
-        display: none;
-    }
+.navigation__link_place_header-active {
+  font-weight: 500;
+}
+
+.navigation__link_place_side-menu-active {
+  border-bottom: 2px solid;
+}
+
+@media screen and (max-width: 768px) {
+  .navigation_hidden {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 500px) {
-    .navigation__list_direction_column {
-        gap: 24px;
-    }
+  .navigation__menu-wrapper_direction_column {
+    gap: 24px;
+  }
+
+  .navigation__link_place_side-menu {
+    padding-bottom: 7px;
+  }
 }

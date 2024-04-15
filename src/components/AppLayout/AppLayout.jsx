@@ -1,18 +1,22 @@
+// IMPORT PACKAGES
 import { Outlet, useLocation } from "react-router-dom";
-import Header from "../header/Header";
+
+// IMPORT COMPONENTS
+import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-import HamburgerMenu from "../HamburgerMenu/HamburgerMenu";
 
-export default function AppLayout({onHamburgerClick}) {
+// APP LAYOUT COMPONENT
+function AppLayout({ onHamburgerClick, loggedIn }) {
+  // HOOKS
+  const location = useLocation();
 
-    const location = useLocation();
-
-    return (
-        <>
-            <Header onHamburgerClick={onHamburgerClick}></Header>
-            <Outlet></Outlet>
-            {location.pathname !== '/profile' && <Footer/>}
-            <HamburgerMenu></HamburgerMenu>
-        </>
-    )
+  return (
+    <>
+      <Header onHamburgerClick={onHamburgerClick} loggedIn={loggedIn} />
+      <Outlet />
+      {location.pathname !== "/profile" && <Footer />}
+    </>
+  );
 }
+
+export default AppLayout;

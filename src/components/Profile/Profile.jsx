@@ -1,41 +1,162 @@
-import { Link } from 'react-router-dom';
-import './Profile.css';
-import AuthTitle from '../AuthTitle/AuthTitle';
+//IMPORT PACKAGES
+import { useEffect, useState, useContext } from "react";
+import useFormWithValidation from "../../hooks/useFormWithValidation";
 
-export default function Profile() {
-    return (
-        <main className='profile'>
-            <section className='profile__wrapper'>
-                <AuthTitle className='profile__title'></AuthTitle>
-                <form className='form form_edit_profile' name='edit-profile'>
-                    <label className='form__label form__label_edit-profile'>Имя
-                        <input 
-                            className='form__input form__input_edit-profile'
-                        >
-                        </input>
-                    </label>
-                    <label className='form__label form__label_edit-profile'>E-mail
-                        <input 
-                            className='form__input form__input_edit-profile'
-                        >
-                        </input>
-                    </label>
-                </form>
-                <div className='profile__wrapper-actions'>
-                    <button
-                        className='profile__button hover-link'
-                        type='button'
-                    >Редактировать
-                    </button>
-                    <button
-                        className='profile__button profile__button_exit hover-link'
-                        type='button'
-                    >
-                        <Link to={'/signin'} className='profile__exit-link'>Выйти из аккаунта</Link>
-                    </button>
-                </div>
-            </section>
+// IMPORT STYLES
+import "./Profile.css";
 
-        </main>
-    )
+// IMPORT COMPONENTS
+import AuthTitle from "../AuthTitle/AuthTitle";
+import Form from "../Form/Form";
+
+// IMPORT CONTEXT
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+
+// IMPORT VARIABLES
+import { USER_NAME_REG_EXP } from "../../utils/constants";
+
+// PROFILE COMPONENT
+function Profile({ onUpdateUser, onLogout, onLoading }) {
+  // HOOKS
+  const currentUser = useContext(CurrentUserContext);
+  const [isCurrentUser, setUserDifference] = useState(true);
+  const [isEditingBegin, setEditStatus] = useState(false);
+  const { values, errors, isFormValid, onChange, resetValidation } =
+    useFormWithValidation();
+
+  useEffect(() => {
+    currentUser.name !== values.name || currentUser.email !== values.email
+      ? setUserDifference(false)
+      : setUserDifference(true);
+  }, [currentUser, values]);
+
+
+  useEffect(() => {
+    resetValidation(false, currentUser);
+  }, [resetValidation, currentUser]);
+
+
+  function handleEditClick() {
+    setEditStatus(!isEditingBegin);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onUpdateUser(values);
+  }
+
+  return (
+    <main className="profile">
+      <section className="profile__wrapper">
+        <AuthTitle
+          title={`Привет, ${currentUser.name || ""}!`}
+          place="edit-profile"
+        />
+        <Form
+          name="edit-profile"
+          onSubmit={handleSubmit}
+          isFormValid={isFormValid}
+          isCurrentUser={isCurrentUser}
+          buttonText={onLoading ? "Сохранение..." : "Сохранить"}
+          isEditingBegun={isEditingBegin}
+        >
+          <label className="form__input-wrapper form__input-wrapper_type_edit-profile">
+            Имя
+            <input
+              className={`form__input form__input_type_edit-profile ${
+                errors.name ? "form__input_style_error" : ""
+              }`}
+              type="text"
+              name="name"
+              form="edit-profile"
+              required
+              minLength="2"
+              maxLength="30"
+              pattern={USER_NAME_REG_EXP}
+              id="name-input"
+              disabled={isEditingBegin && !onLoading ? false : true}
+              onChange={onChange}
+              value={values.name || ""}
+            />
+          </label>
+          <label className="form__input-wrapper form__input-wrapper_type_edit-profile">
+            E-mail
+            <input
+              className={`form__input form__input_type_edit-profile ${
+                errors.email ? "form__input_style_error" : ""
+              }`}
+              type="text"
+              name="email"
+              form="edit-profile"
+              required
+              id="email-input"
+              disabled={isEditingBegin && !onLoading ? false : true}
+              onChange={onChange}
+              value={values.email || ""}
+            />
+          </label>
+          <div
+            className={`form__errors-wrapper ${
+              errors.name || errors.email ? "form__errors-wrapper_active" : ""
+            }`}
+          >
+            <div className="form__error-wrapper">
+              <p
+                className={`form__error-name ${
+                  errors.name ? "form__error-name_active" : ""
+                }`}
+              >
+                Имя:
+              </p>
+              <span
+                className={`form__input-error form__input-error_type_edit-profile ${
+                  errors.name ? "form__input-error_active" : ""
+                }`}
+              >
+                {errors.name || ""}
+              </span>
+            </div>
+            <div className="form__error-wrapper">
+              <p
+                className={`form__error-name ${
+                  errors.email ? "form__error-name_active" : ""
+                }`}
+              >
+                E-mail:
+              </p>
+              <span
+                className={`form__input-error form__input-error_type_edit-profile ${
+                  errors.email ? "form__input-error_active" : ""
+                }`}
+              >
+                {errors.email || ""}
+              </span>
+            </div>
+          </div>
+        </Form>
+        <div
+          className={`profile__actions-wrapper ${
+            isEditingBegin ? "profile__actions-wrapper_hidden" : ""
+          }`}
+        >
+          <button
+            className="profile__btn-action profile__btn-action_type_edit hover-link"
+            type="button"
+            onClick={handleEditClick}
+          >
+            Редактировать
+          </button>
+          <button
+            className="profile__btn-action profile__btn-action_type_exit hover-link"
+            type="button"
+            onClick={onLogout}
+          >
+            Выйти из аккаунта
+          </button>
+        </div>
+      </section>
+    </main>
+  );
 }
+
+export default Profile;

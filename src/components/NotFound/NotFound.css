@@ -1,64 +1,79 @@
 .not-found {
-    max-width: 1280px;
-    padding: 246px 60px;
+  max-width: 100%;
 }
 
 .not-found__wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    
-    max-width: 400px;
-    margin: 0 auto;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 246px 10px 60px;
+  box-sizing: border-box;
+  background-color: var(--bg-color-main);
 }
 
 .not-found__title {
-    font-size: 140px;
-    font-weight: 400;
-    line-height: 170px;
-    margin: 0;
+  margin-top: 0;
+  margin-bottom: 5px;
+  font-family: var(--main-font);
+  font-size: 140px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--black);
 }
 
 .not-found__text {
-    font-size: 16px;
-    line-height: 20px;
-    font-weight: 400;
-    margin: 0;
+  margin-top: 0;
+  margin-bottom: 186px;
+  font-family: var(--main-font);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.18;
+  text-align: center;
+  color: var(--black);
 }
 
-.not-found__link {
-    font-size: 14px;
-    line-height: 17px;
-    font-weight: 400;
-    color: #3456F3;
-    margin: 184px 0px 0px;
-    text-decoration: none;
+.not-found__btn-back {
+  display: block;
+  border: none;
+  padding: 0;
+  margin: 0 auto;
+  background-color: transparent;
+  cursor: pointer;
+  font-family: var(--main-font);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.21;
+  color: var(--blue);
+  transition: var(--opacity);
 }
 
-@media screen and (max-width:990px) {
-    .not-found {
-        padding-top: 408px;
-        padding-bottom: 222px;
-    }
+@media screen and (max-width: 990px) {
+  .not-found__wrapper {
+    padding-top: 408px;
+    padding-bottom: 222px;
+  }
 }
 
-@media screen and (max-width:767px) {
-    .not-found {
-        padding: 329px 10px 30px;
-    }
+@media screen and (max-width: 620px) {
+  .not-found__wrapper {
+    padding-top: 329px;
+    padding-bottom: 30px;
+  }
 
-    .not-found__title {
-        font-size: 80px;
-        line-height: 96px;
-        margin-bottom: 10px;
-    }
+  .not-found__title {
+    margin-bottom: 10px;
+    font-size: 80px;
+    line-height: 1.21;
+  }
 
-    .not-found__text {
-        font-size: 12px;
-        line-height: 15px;
-    }
+  .not-found__text {
+    margin-bottom: 284px;
+    font-size: 12px;
+    line-height: 1.25;
+  }
 
-    .not-found__link {
-        margin-top: 284px;
-    }
+  .not-found__btn-back {
+    font-size: 12px;
+    line-height: 1.25;
+  }
 }

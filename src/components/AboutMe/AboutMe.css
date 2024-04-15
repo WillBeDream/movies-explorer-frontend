@@ -1,150 +1,163 @@
 .about-me {
-    padding: 110px 70px 125px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 110px 70px 101px;
+  box-sizing: border-box;
+  background-color: var(--bg-color-main);
 }
 
-.about-me__wrapper {
-    grid-column-gap: 50px;
-    display: grid;
-    grid-template-rows: repeat(4, max-content);
-    grid-template-columns: repeat(2, 270px);
-    justify-content: space-between;
-    grid-template-areas: 
-    'name img'
-    'work img'
-    'text img'
-    'github img';
-    
-    
+.about-me__bio {
+  display: grid;
+  grid-template-columns: minmax(292px, 600px) 270px;
+  grid-template-rows: repeat(3, min-content) 1fr;
+  grid-template-areas:
+    "name img"
+    "profession img"
+    "text img"
+    "link img";
+  justify-content: space-between;
+  align-content: start;
+  column-gap: 50px;
+  margin-top: 66px;
 }
 
-.about-me__title {
-    font-size: 50px;
-    font-weight: 400;
-    line-height: 58px;
-    margin: 66px 0px 0px;
-    grid-area: name;
-    letter-spacing: -0.04em;
+.about-me__name {
+  margin: 0;
+  grid-area: name;
+  font-family: var(--main-font);
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 1.16;
+  letter-spacing: -0.04em;
+  color: var(--black);
 }
 
-.about-me__subtitle {
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 20px;
-    margin: 18px 0px 0px;
-    grid-area: work;
-    width: 600px;
+.about-me__profession {
+  margin-top: 18px;
+  margin-bottom: 0;
+  grid-area: profession;
+  font-family: var(--main-font);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.11;
+  color: var(--black);
 }
 
 .about-me__text {
-    width: 600px;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 22px;
-    margin: 26px 0px 0px;
-    grid-area: text;
+  margin-top: 26px;
+  margin-bottom: 0;
+  grid-area: text;
+  font-family: var(--main-font);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.57;
+  color: var(--black);
 }
 
-.about-me__github {
-    font-size: 14px;
-    line-height: 17px;
-    margin: 100px 0px 0px;
-    font-weight: 500;
-    grid-area: github;
-    text-decoration: none;
-    color: #000000;
+.about-me__link {
+  align-self: end;
+  margin-right: auto;
+  grid-area: link;
+  font-family: var(--main-font);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.21;
+  color: var(--black);
+  text-decoration: none;
+  transition: var(--opacity);
 }
 
-.about-me__photo {
-    height: 327px;
-    grid-area: img;
-    margin-top: 66px;
+.about-me__img {
+  width: 270px;
+  grid-area: img;
+  object-fit: contain;
+  border-radius: 10px;
+  font-family: var(--main-font);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.23;
+  color: var(--white);
 }
 
 @media screen and (max-width: 990px) {
-    .about-me {
-        padding: 90px 50px;
-    }
+  .about-me {
+    padding: 90px 50px 66px;
+  }
 
-    .about-me__wrapper {
-        grid-template-columns: minmax(292px, 600px) 255px;
-        grid-template-rows: repeat(3, min-content) 1fr;
-    }
+  .about-me__bio {
+    grid-template-columns: minmax(292px, 600px) 255px;
+  }
 
-    .about-me__title {
-        font-size: 40px;
-        line-height: 40px;
-        
-    }
+  .about-me__name {
+    font-size: 40px;
+    line-height: 1;
+  }
 
-    .about-me__subtitle {
-        font-size: 12px;
-        line-height: 18px;
-        margin-top: 16px;
-    }
+  .about-me__profession {
+    margin-top: 16px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
 
-    .about-me__text {
-        width: 364px;
-        font-size: 12px;
-        line-height: 18px;
-        margin-top: 20px;
-    }
+  .about-me__text {
+    margin-top: 20px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
 
-    .about-me__github {
-        margin-top: 87px;
-    }
-
-    .about-me__photo {
-        width: 255px;
-        height: 307px;
-    }
-
+  .about-me__img {
+    width: 255px;
+  }
 }
 
-@media screen and (max-width: 767px) {
-    .about-me {
-        padding: 70px 14px;
-    }
-    
-    .about-me__wrapper {
-        grid-template-areas: 
-        'img'
-        'name'
-        'work'
-        'text'
-        'github';
-        grid-template-columns: none;
-        justify-content: center;
-    }
+@media screen and (max-width: 748px) {
+  .about-me__bio {
+    grid-template-columns: 1fr;
+    grid-template-rows: 352px repeat(4, min-content);
+    grid-template-areas:
+      "img"
+      "name"
+      "profession"
+      "text"
+      "link";
+  }
 
-    .about-me__title {
-        font-size: 30px;
-        line-height: 37px;
-        margin-top: 40px;
-    }
+  .about-me__name {
+    margin-top: 40px;
+  }
 
-    .about-me__subtitle {
-        width: 292px;
-        font-size: 11px;
-        line-height: 16px;
-        margin-top: 20px;
-    }
+  .about-me__link {
+    margin-top: 40px;
+  }
 
-    .about-me__text {
-        font-size: 11px;
-        line-height: 16px;
-        width: 292px;
-    }
-
-    .about-me__github {
-        margin-top: 40px;
-    }
-
-    .about-me__photo {
-        justify-self: center;
-        width: 292px;
-        margin-top: 60px;
-        height: 352px;
-    }
+  .about-me__img {
+    width: 292px;
+    justify-self: center;
+  }
 }
 
+@media screen and (max-width: 620px) {
+  .about-me {
+    padding: 70px 14px 51px;
+  }
 
+  .about-me__bio {
+    margin-top: 60px;
+  }
+
+  .about-me__name {
+    font-size: 30px;
+    line-height: 1.2;
+  }
+
+  .about-me__profession {
+    margin-top: 20px;
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  .about-me__text {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+}
