@@ -2,4 +2,4 @@
 
 ссылка на проект - movies-service.nomoredomainswork.ru
 
-https://github.com/WillBeDream/movies-explorer-frontend/pull/2  - пулл реквест
+https://github.com/WillBeDream/movies-explorer-frontend/pull/3 - пулл реквест
