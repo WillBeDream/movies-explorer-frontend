@@ -1,49 +1,102 @@
-.movies-card {
-    width: 100%;
+.element__item {
+  width: 100%;
 }
 
-.movies-card__image {
-    width: 100%;
+.element__link {
+  width: 100%;
 }
 
-.movies-card__wrapper {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 13px;
-    
+.element__foto {
+  width: 100%;
+  object-fit: cover;
+  height: 151px;
+  cursor: pointer;
+  margin: 0;
+  display: block;
 }
 
-.movies-card__text {
-    margin: 0;
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 16px;
-    text-align: center;
+@media screen and (max-width: 900px) {
+  .element__foto {
+    height: 190px;
+  }
 }
 
-.movies-card__button {
-    height: 24px;
-    width: 24px;
-    background-color: #F9F9F9;
-    border-radius: 50%;
-    border: none;
-    padding: 0;
+@media screen and (max-width: 320px) {
+  .element__foto {
+    height: 168px;
+  }
 }
 
-.movies-card__like {
-    height: 10px;
-    width: 10px;
-    margin: auto;
-    background-image: url(../../images/like.svg);
-    background-repeat: no-repeat;
+.element__info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #E8E8E8;
+  margin: 0;
 }
 
-.movies-card__duration {
-    border-top: 1px solid #E8E8E8;
-    padding-top: 6px;
-    font-size: 11px;
-    font-weight: 400;
-    line-height: 14px;
-    color: #A0A0A0;
-    margin: 17px 0px 0px;
+.element__title {
+ 
+  text-align: left;
+  padding: 14px 0 14px;
+  margin: 0;
+  max-width: 295px;
+  min-height: 32px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+@media screen and (max-width: 320px) {
+  .element__title {
+    font-size: 12px;
+    line-height: 15px;
+    padding: 15px 0 29px;
+  }
+}
+
+.element__button {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  background-image: url(../../images/button-savenactive.svg);
+  margin-top: 10px;
+}
+
+.element__button:hover {
+  opacity: .7;
+  transition: 1s;
+  cursor: pointer;
+}
+
+.element__button_likes {
+  background-image: url(../../images/button-savenactive.svg);
+}
+
+.element__button_likesActive {
+  background-image: url(../../images/button-save.svg);
+}
+
+
+.element__button_delete {
+  background-image: url(../../images/button-delete.svg);
+}
+
+.element__duration {
+  
+  text-align: left;
+  color: #A0A0A0;
+  box-sizing: border-box;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 13px;
+}
+
+@media screen and (max-width: 320px) {
+  .element__duration {
+    font-size: 10px;
+    line-height: 13px;
+  }
 }

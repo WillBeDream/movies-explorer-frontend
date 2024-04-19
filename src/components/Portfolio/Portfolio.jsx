@@ -1,43 +1,31 @@
+import { Link } from 'react-router-dom';
 import './Portfolio.css';
-import arrowImg from '../../images/arrow.svg';
 
-export default function Portflio() {
-    return (
-        <div className='portfolio'>
-            <h4 className='portfolio__title'>Портфолио</h4>
-            <ul className='portfolio__list'>
-                <li className='portfolio__item'>
-                    <a 
-                        className='portfolio__link hover-link'
-                        href='https://willbedream.github.io/how-to-learn/'
-                        target="_blank"
-                    >
-                        <p className='portfolio__text'>Статичный сайт</p>
-                        <p className='portfolio__img'>&#x2197;</p>
-                    </a>
-                </li>
-                <li className='portfolio__item'>
-                    <a 
-                        className='portfolio__link hover-link' 
-                        href='https://willbedream.github.io/russian-travel/'
-                        target="_blank"
-                        rel='noreferrer'
-                    >
-                        <p className='portfolio__text'>Адаптивный сайт</p>
-                        <p className='portfolio__img'>&#x2197;</p>
-                    </a>
-                </li>
-                <li className='portfolio__item'>
-                    <a
-                        className='portfolio__link hover-link'
-                        href='http://normal.nomoredomainsmonster.ru/'
-                        target="_blank"
-                    > 
-                        <p className='portfolio__text'>Одностраничное приложение</p>
-                        <p className='portfolio__img'>&#x2197;</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    )
+function Portfolio() {
+  return (
+    <section className="portfolio">
+      <h2 className="portfolio__brief">Портфолио</h2>
+      <nav className="portfolio__navigation">
+        <ul className="portfolio__lists">
+          <li className="portfolio__list">
+            <Link to={"https://willbedream.github.io/how-to-learn/"} className="portfolio__link" target="_blank" rel="noreferrer">
+              <p className="portfolio__site">Статичный сайт</p>
+              <div className="portfolio__button"/></Link>
+          </li> 
+          <li className="portfolio__list">
+          <Link to={"https://willbedream.github.io/russian-travel/"} className="portfolio__link" target="_blank" rel="noreferrer">
+              <p className="portfolio__site">Адаптивный сайт</p>
+              <div className="portfolio__button"/></Link>
+          </li> 
+          <li className="portfolio__list">
+          <Link to={"http://normal.nomoredomainsmonster.ru/"} className="portfolio__link portfolio__link_end"  target="_blank" rel="noreferrer">
+              <p className="portfolio__site">Одностраничное приложение</p>
+              <div className="portfolio__button"/></Link>
+          </li> 
+        </ul>
+      </nav>
+    </section>
+  )
 }
+
+export default Portfolio;
