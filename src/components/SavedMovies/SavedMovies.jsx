@@ -1,124 +1,82 @@
-// IMPORT PACKAGES
-import { useState, useCallback, useEffect } from "react";
+import SearchFilms from '../SearchFilms/SearchFilms';
+import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import { useCallback, useEffect, useState } from 'react';
 
-// IMPORT STYLES
-import "./SavedMovies.css";
-
-// IMPORT COMPONENTS
-import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import SearchForm from "../SearchForm/SearchForm";
-
-// IMPORT UTILS
-import { handleMovieFiltering, handleMovieSearch } from "../../utils/utils";
-
-// SAVED MOVIES COMPONENT
-function SavedMovies({ savedCards, onCardDelete }) {
-  // HOOKS
-  const [cardsForRender, setCardsForRender] = useState([]);
-  const [filteredCards, setFilteredCards] = useState([]);
-  const [isFilterOn, setFilter] = useState(false);
-  const [isCardsNotFound, setCardsNotFound] = useState(false);
-  const [isSearching, setIsSearching] = useState(false);
-
-  // HANDLER ON SEARCH SUBMIT
-  const handleOnSearchSubmit = useCallback(
-    (searchQuery) => {
-      setCardsNotFound(false);
-      setIsSearching(true);
-      if (savedCards.length) {
-        const found = handleMovieSearch(savedCards, searchQuery, true);
-        setFilteredCards(found);
-        if (!found.length) {
-          setCardsNotFound(true);
-          setIsSearching(false);
-          setCardsForRender(found);
+function SavedMovies({ saveMovies, handleDeleteMovie, errorNoSavedMovie }) {
+  const [isSearchFilms, setIsSearchFilms] = useState('')  // текст в строке поиска фильмов.
+  const [isChecked, setIsChecked] = useState(false); // состояние чекбокса.
+  const [selectedFilms, setSelectedFilms] = useState(saveMovies) //отобранные фильмы по строке поиска и чекбоксу
+  const [inputValue, setInputValue] = useState("");
+  const [isValidSearch, setIsValidSearch] = useState(true)
+  const [errorNoMovie, setErrorNoMovie] = useState(false)
+  
+    const selectionOfFilms = useCallback((input, isChecked, movies) => {
+      setIsSearchFilms(input)
+      setSelectedFilms(movies.filter((item) => {
+        const searchName = item.nameRU.toLowerCase().includes(input.toLowerCase())
+        if (isChecked) {
+          return searchName && item.duration <= 40;
         } else {
-          const filtered = handleMovieFiltering(found, isFilterOn, true);
-          setIsSearching(false);
-          setCardsForRender(filtered);
-          if (!filtered.length) {
-            setIsSearching(false);
-            setCardsNotFound(true);
-          }
+          return searchName;
         }
+      }))
+      if (selectedFilms.length === 0) {
+        setErrorNoMovie(true)
       } else {
-        setIsSearching(false);
-        setCardsNotFound(true);
+        setErrorNoMovie(false)
       }
-    },
-    [savedCards, isFilterOn]
-  );
 
-  // HANDLER FILTER SAVED MOVIES
-  const handleOnFilterClick = useCallback(
-    (isChecked) => {
-      setFilter(isChecked);
-      setCardsNotFound(false);
-      const filtered = handleMovieFiltering(filteredCards, isChecked, true);
-      setCardsForRender(filtered);
-      if (!filtered.length) {
-        setCardsNotFound(true);
-      }
-    },
-    [filteredCards]
-  );
+    }, [selectedFilms.length])
+         
+  function handleInputChange(evt) {
+    setInputValue(evt.target.value);
+    setIsValidSearch(true)
+  }
+  
+  function searchForMovies(input) {
+     selectionOfFilms(input, isChecked, saveMovies)
+}
 
-  // DEPENDENCIES ON THE RENDERING OF SAVED CARDS
   useEffect(() => {
-    setCardsNotFound(false);
-    if (
-      localStorage.getItem("savedMoviesSearchQuery") &&
-      localStorage.getItem("isSavedMoviesFilterOn")
-    ) {
-      const filter = JSON.parse(localStorage.getItem("isSavedMoviesFilterOn"));
-      setFilter(filter);
-      const searchQuery = localStorage.getItem("savedMoviesSearchQuery");
-      const found = handleMovieSearch(savedCards, searchQuery, true);
-      setFilteredCards(found);
-      if (!found.length) {
-        setCardsNotFound(true);
-        setCardsForRender(found);
+    selectionOfFilms(isSearchFilms, isChecked, saveMovies)
+  }, [selectionOfFilms, saveMovies, isChecked, isSearchFilms, selectedFilms.length])
+
+  function searchForMoviescheckbox() {
+    if(inputValue) {
+      if (isChecked) {
+        setIsChecked(false)
+        selectionOfFilms(inputValue, false, saveMovies)
       } else {
-        const filtered = handleMovieFiltering(found, filter, true);
-        setCardsForRender(filtered);
-        if (!filtered.length) {
-          setCardsNotFound(true);
-        }
-      }
-    } else if (
-      !localStorage.getItem("savedMoviesSearchQuery") &&
-      localStorage.getItem("isSavedMoviesFilterOn")
-    ) {
-      setFilteredCards(savedCards);
-      const filter = JSON.parse(localStorage.getItem("isSavedMoviesFilterOn"));
-      setFilter(filter);
-      const filtered = handleMovieFiltering(savedCards, filter, true);
-      setCardsForRender(filtered);
-      if (!filtered.length) {
-        setCardsNotFound(true);
-      }
+        setIsChecked(true)
+        selectionOfFilms(inputValue, true, saveMovies)
+      } 
     } else {
-      setCardsForRender(savedCards);
-      setFilteredCards(savedCards);
-    }
-  }, [savedCards]);
+        setIsValidSearch(false)
+      }
+  }
 
   return (
-    <main className="saved-movies">
-      <SearchForm
-        onSearch={handleOnSearchSubmit}
-        onFilterChange={handleOnFilterClick}
-        isFilterOn={isFilterOn}
-        isSearching={isSearching}
-      />
-      <MoviesCardList
-        cards={cardsForRender}
-        savedCards={savedCards}
-        isCardsNotFound={isCardsNotFound}
-        onCardDelete={onCardDelete}
-      />
-    </main>
-  );
+    <>
+        <SearchFilms 
+          searchForMovies={searchForMovies}
+          isChecked={isChecked}
+          searchForMoviescheckbox={searchForMoviescheckbox}
+          saveMovies={saveMovies}
+          isSearchFilms={isSearchFilms}
+          handleInputChange={handleInputChange}
+          isValidSearch={isValidSearch}
+          //setErrorNoMovie={setErrorNoMovie}
+         // errorNoSavedMovie={errorNoSavedMovie}
+        />
+        <MoviesCardList
+          movies={selectedFilms}
+          handleDeleteMovie={handleDeleteMovie}
+          saveMovies={saveMovies}
+          errorNoMovie={errorNoMovie}
+          errorNoSavedMovie={errorNoSavedMovie}
+        />
+      </> 
+  )
 }
 
 export default SavedMovies;

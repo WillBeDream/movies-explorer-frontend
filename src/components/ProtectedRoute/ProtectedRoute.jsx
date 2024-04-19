@@ -1,12 +1,9 @@
 import { Navigate } from "react-router-dom";
+import * as React from "react";
 
-// PROTECTED ROUTE COMPONENT
-const ProtectedRoute = ({ element: Component, ...props }) => {
-  return props.loggedIn ? (
-    <Component {...props} />
-  ) : (
-    <Navigate to="/" replace />
+const ProtectedRoute = ({ isLoggedIn, element }) => {
+  return (
+    isLoggedIn ? element : <Navigate to="/" replace />
   );
-};
-
+}
 export default ProtectedRoute;

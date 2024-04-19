@@ -1,161 +1,144 @@
-//IMPORT PACKAGES
-import { useEffect, useState, useContext } from "react";
-import useFormWithValidation from "../../hooks/useFormWithValidation";
+import LoginRegistrationForm from '../LoginRegistrationForm/LoginRegistrationForm';
+import useFormValidation from '../../hooks/useFormValidation';
+import './Profile.css';
+import Input from '../Input/Input';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
+import { useContext, useState } from 'react';
+import { useEffect } from 'react';
+import { EmailReg } from '../../utils/constants';
+import { useLocation } from 'react-router-dom';
 
-// IMPORT STYLES
-import "./Profile.css";
 
-// IMPORT COMPONENTS
-import AuthTitle from "../AuthTitle/AuthTitle";
-import Form from "../Form/Form";
-
-// IMPORT CONTEXT
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-
-// IMPORT VARIABLES
-import { USER_NAME_REG_EXP } from "../../utils/constants";
-
-// PROFILE COMPONENT
-function Profile({ onUpdateUser, onLogout, onLoading }) {
-  // HOOKS
+function Profile({ handleUpdateUser, isOpenEdit, isSuccessful, handleButtonEditClick, outOfAccount, isErrorAll, setIsOpenEdit }) {
+  const [checkButton, setCheckButton] = useState(false);
+  const { values, errors, isValid, isInputValid, handleChange, resetForm } = useFormValidation()
   const currentUser = useContext(CurrentUserContext);
-  const [isCurrentUser, setUserDifference] = useState(true);
-  const [isEditingBegin, setEditStatus] = useState(false);
-  const { values, errors, isFormValid, onChange, resetValidation } =
-    useFormWithValidation();
-
+  const [name, setName] = useState(currentUser.name);
+  const [updateName, setUpdateName] = useState(currentUser.name);
+  const [email, setEmail] = useState(currentUser.email);
+  const [updateEmail, setUpdateEmail] = useState(currentUser.email);
+  const { pathname } = useLocation();
+  
   useEffect(() => {
-    currentUser.name !== values.name || currentUser.email !== values.email
-      ? setUserDifference(false)
-      : setUserDifference(true);
-  }, [currentUser, values]);
-
-
-  useEffect(() => {
-    resetValidation(false, currentUser);
-  }, [resetValidation, currentUser]);
-
-
-  function handleEditClick() {
-    setEditStatus(!isEditingBegin);
+    resetForm({ username: currentUser.name, email: currentUser.email })
+  }, [resetForm, currentUser, isOpenEdit])
+  
+  function onSubmitEdite(evt) {
+    evt.preventDefault()
+      handleUpdateUser(values.username, values.email)
+  }
+  
+  function checkName(evt) {
+    const value = evt.target.value;
+    setName(value);
+    value === updateName ? setCheckButton(false) : setCheckButton(true)
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    onUpdateUser(values);
+  function checkEmail(evt) {
+    const value = evt.target.value;
+    setEmail(value);
+    value === updateEmail ? setCheckButton(false) : setCheckButton(true)
   }
 
+  useEffect(() => {
+    if (pathname === '/profile')
+    setIsOpenEdit(false);
+  }, [pathname, setIsOpenEdit])
+     
   return (
-    <main className="profile">
-      <section className="profile__wrapper">
-        <AuthTitle
-          title={`Привет, ${currentUser.name || ""}!`}
-          place="edit-profile"
+
+    isOpenEdit ?
+
+    <LoginRegistrationForm
+      nameForm='profile-edit'
+      title={`Привет, ${currentUser.name}!`}
+      nameButton='Сохранить'
+      isValid={isValid}
+      onSubmit={onSubmitEdite}
+      isSuccessful={isSuccessful}
+      checkButton={checkButton}
+      isErrorAll={isErrorAll}
+    >
+      <fieldset className='profile profile_edit'>
+      <><Input
+          nameinput='profile'
+          name='username'
+          type='text'
+          title='Имя'
+          value={values.username}
+          isInputValid={isInputValid.username}
+          error={errors.username}
+          minLength='2'
+          maxLength='40'
+          id='username'
+          onChange={(evt) => {
+            handleChange(evt)
+            checkName(evt)}}
+          placeholder='Введите имя'
         />
-        <Form
-          name="edit-profile"
-          onSubmit={handleSubmit}
-          isFormValid={isFormValid}
-          isCurrentUser={isCurrentUser}
-          buttonText={onLoading ? "Сохранение..." : "Сохранить"}
-          isEditingBegun={isEditingBegin}
-        >
-          <label className="form__input-wrapper form__input-wrapper_type_edit-profile">
-            Имя
-            <input
-              className={`form__input form__input_type_edit-profile ${
-                errors.name ? "form__input_style_error" : ""
-              }`}
-              type="text"
-              name="name"
-              form="edit-profile"
-              required
-              minLength="2"
-              maxLength="30"
-              pattern={USER_NAME_REG_EXP}
-              id="name-input"
-              disabled={isEditingBegin && !onLoading ? false : true}
-              onChange={onChange}
-              value={values.name || ""}
-            />
-          </label>
-          <label className="form__input-wrapper form__input-wrapper_type_edit-profile">
-            E-mail
-            <input
-              className={`form__input form__input_type_edit-profile ${
-                errors.email ? "form__input_style_error" : ""
-              }`}
-              type="text"
-              name="email"
-              form="edit-profile"
-              required
-              id="email-input"
-              disabled={isEditingBegin && !onLoading ? false : true}
-              onChange={onChange}
-              value={values.email || ""}
-            />
-          </label>
-          <div
-            className={`form__errors-wrapper ${
-              errors.name || errors.email ? "form__errors-wrapper_active" : ""
-            }`}
-          >
-            <div className="form__error-wrapper">
-              <p
-                className={`form__error-name ${
-                  errors.name ? "form__error-name_active" : ""
-                }`}
-              >
-                Имя:
-              </p>
-              <span
-                className={`form__input-error form__input-error_type_edit-profile ${
-                  errors.name ? "form__input-error_active" : ""
-                }`}
-              >
-                {errors.name || ""}
-              </span>
-            </div>
-            <div className="form__error-wrapper">
-              <p
-                className={`form__error-name ${
-                  errors.email ? "form__error-name_active" : ""
-                }`}
-              >
-                E-mail:
-              </p>
-              <span
-                className={`form__input-error form__input-error_type_edit-profile ${
-                  errors.email ? "form__input-error_active" : ""
-                }`}
-              >
-                {errors.email || ""}
-              </span>
-            </div>
-          </div>
-        </Form>
-        <div
-          className={`profile__actions-wrapper ${
-            isEditingBegin ? "profile__actions-wrapper_hidden" : ""
-          }`}
-        >
-          <button
-            className="profile__btn-action profile__btn-action_type_edit hover-link"
-            type="button"
-            onClick={handleEditClick}
-          >
-            Редактировать
-          </button>
-          <button
-            className="profile__btn-action profile__btn-action_type_exit hover-link"
-            type="button"
-            onClick={onLogout}
-          >
-            Выйти из аккаунта
-          </button>
-        </div>
-      </section>
-    </main>
+          
+        <Input
+           pattern={EmailReg}
+           nameinput='profile'
+           name='email'
+           type='email'
+           title='E-mail'
+           value={values.email}
+           isInputValid={isInputValid.email}
+           error={errors.email}
+           minLength='2'
+           maxLength='40'
+           id='email'
+           onChange={(evt) => {
+            handleChange(evt)
+            checkEmail(evt)}}
+           placeholder='Введите электронную почту'
+          /></>
+      </fieldset>
+      
+    </LoginRegistrationForm>
+  :
+    <LoginRegistrationForm
+      nameForm='profile'
+      title={`Привет, ${currentUser.name}!`}
+      nameButton='Редактировать'
+      onSubmit={handleButtonEditClick}
+      outOfAccount={outOfAccount}
+    >
+      <fieldset className='profile'>
+        <Input
+          nameinput='profile'
+          name='username'
+          type='text'
+          title='Имя'
+          value={values.username}
+          isInputValid={isInputValid.username}
+          error={errors.username}
+          minLength='2'
+          maxLength='40'
+          id='username'
+          onChange={handleChange}
+          placeholder='Введите имя'
+          disabled={!isOpenEdit}
+        />
+        <Input
+          pattern={EmailReg}
+          nameinput='profile'
+          name='email'
+          type='email'
+          title='E-mail'
+          value={values.email}
+          isInputValid={isInputValid.email}
+          error={errors.email}
+          minLength='2'
+          maxLength='40'
+          id='email'
+          onChange={handleChange}
+          placeholder='Введите электронную почту'
+          disabled={!isOpenEdit}
+        />
+       </fieldset>
+    </LoginRegistrationForm>
   );
 }
 

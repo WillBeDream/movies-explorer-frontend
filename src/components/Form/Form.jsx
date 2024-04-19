@@ -1,48 +1,25 @@
-// IMPORT STYLES
-import "./Form.css";
+import { Link } from 'react-router-dom';
+import logo from '../../images/header-logo.svg';
+import './Form.css';
 
-// FORM COMPONENT
-function Form({
-  name,
-  onSubmit,
-  isFormValid,
-  isCurrentUser,
-  buttonText,
-  isEditingBegun,
-  ...props
-}) {
-  // HANDLER BUTTON DISABLE
-  function handleButtonDisable() {
-    if (name === "edit-profile") {
-      return isFormValid && !isCurrentUser ? false : true;
-    } else {
-      return isFormValid ? false : true;
-    }
-  }
+function Form({ nameForm, title, nameButton, onSubmit, children, isValid, onClick, isSuccessful, isErrorAll, checkButton }) {
 
   return (
-    <form
-      action="#"
-      name={`${name}`}
-      id={`${name}`}
-      className={`form form_type_${name}`}
-      noValidate
-      onSubmit={onSubmit}
-    >
-      {props.children}
-      <button
-        type="submit"
-        form={`${name}`}
-        className={`form__btn-submit form__btn-submit_type_${name} ${
-          name === "edit-profile" && !isEditingBegun
-            ? "form__btn-submit_hidden"
-            : ""
-        } hover-button`}
-        disabled={handleButtonDisable()}
-      >
-        {buttonText}
-      </button>
+    <form className={`form form_${nameForm}`} noValidate name={nameForm} onSubmit={onSubmit}>
+      <div className='form__logog'>
+      <Link to={'/'} className="form__link"><img className={nameForm === 'profile' || nameForm === 'profile-edit' ? 
+          'form__logo form__logo_profile' : 'form__logo'} src={logo} alt="логотип сайта"/></Link>
+      </div>
+    {nameForm === `profile`|| nameForm === 'profile-edit' ? <h1 className="form__title form__title_profile">{title}</h1> : 
+      <h1 className="form__title">{title}</h1>}
+      {children}
+      {nameForm === `profile`|| nameForm === 'profile-edit' ? 
+        <span className={`profile__res ${isSuccessful || isErrorAll ? 'profile__res profile__res_active' : ''}`}>{isSuccessful ? 'Данные профиля успешно обновлены.' : 'При обновлении профиля произошла ошибка.'}</span> : ''}
+      {nameForm === 'signup' ?  <span className={`profile__res ${isErrorAll ? 'profile__res profile__res_active' : ''}`}>При регистрации произошла ошибка</span> : ''}
+      <button className={nameForm === 'profile' ? 'form__btn-enter form__btn-enter_profile' : 'form__btn-enter button'} type="submit" disabled={nameForm === 'profile-edit' ? (!isValid || !checkButton) : !isValid} aria-label={nameButton} onClick={onClick}>{nameButton}</button>
     </form>
+ 
+ 
   );
 }
 

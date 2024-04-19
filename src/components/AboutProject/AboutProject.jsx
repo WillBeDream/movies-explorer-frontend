@@ -1,48 +1,31 @@
-// IMPORT STYLES
-import "./AboutProject.css";
+import './AboutProject.css';
 
-// IMPORT COMPONENTS
-import SectionTitle from "../SectionTitle/SectionTitle";
-
-// ABOUT PROJECT COMPONENT
-function AboutProject({ aboutRef }) {
+function AboutProject() {
   return (
-    <section className="about-project" ref={aboutRef}>
-      <SectionTitle title="О проекте" />
-      <div className="about-project__two-columns">
-        <div className="about-project__column">
-          <h3 className="about-project__subtitle">
-            Дипломный проект включал 5&nbsp;этапов
-          </h3>
-          <p className="about-project__column-text">
-            Составление плана, работу над бэкендом, вёрстку, добавление
-            функциональности и&nbsp;финальные доработки.
-          </p>
+    <section className="about-project" id={"aboutProject"}>
+      <h2 className="about-project__brief">О проекте</h2>
+      <div className="about-project__conteiners">
+        <div className="about-project__conteiner">
+          <h3 className="about-project__title">Дипломный проект включал 5 этапов</h3>
+          <p className="about-project__subtitle">Составление плана, работу над бэкендом, вёрстку, добавление функциональности и финальные доработки.</p>
         </div>
-        <div className="about-project__column">
-          <h3 className="about-project__subtitle">
-            На&nbsp;выполнение диплома ушло 5&nbsp;недель
-          </h3>
-          <p className="about-project__column-text">
-            У&nbsp;каждого этапа был мягкий и&nbsp;жёсткий дедлайн, которые
-            нужно было соблюдать, чтобы успешно защититься.
-          </p>
+        <div className="about-project__conteiner">
+          <h3 className="about-project__title">На выполнение диплома ушло 5 недель</h3>
+          <p className="about-project__subtitle">У каждого этапа был мягкий и жёсткий дедлайн, которые нужно было соблюдать, чтобы успешно защититься.</p>
         </div>
       </div>
-      <div className="about-project__timeline">
-        <div className="about-project__stage about-project__stage_type_first">
-          <p className="about-project__stage-text">1 неделя</p>
-          <p className="about-project__stage-caption">Back-end</p>
+      <div className="about-project__conteiners">
+        <div className="about-project__conteiner about-project__conteiner_time1">
+          <h3 className="about-project__time">1 неделя</h3>
+          <p className="about-project__text">Back-end</p>
         </div>
-        <div className="about-project__stage about-project__stage_type_second">
-          <p className="about-project__stage-text about-project__stage-text_type_second">
-            4 недели
-          </p>
-          <p className="about-project__stage-caption">Front-end</p>
+        <div className="about-project__conteiner about-project__conteiner_time4">
+          <h3 className="about-project__time about-project__time_gray">4 недели</h3>
+          <p className="about-project__text">Front-end</p>
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 export default AboutProject;

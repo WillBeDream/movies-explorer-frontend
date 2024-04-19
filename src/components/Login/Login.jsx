@@ -1,86 +1,61 @@
-// IMPORT PACKAGES
-import { Navigate } from "react-router-dom";
-import useFormWithValidation from "../../hooks/useFormWithValidation";
+import LoginRegistrationForm from "../LoginRegistrationForm/LoginRegistrationForm";
+import useFormValidation from "../../hooks/useFormValidation";
+import './Login.css';
+import Input from "../Input/Input";
+import { EmailReg } from "../../utils/constants";
 
-// IMPORT STYLES
-import "./Login.css";
+function Login({ handleLogin }) {
+  const { values, errors, isValid, isInputValid, handleChange, resetForm } = useFormValidation()
 
-// IMPORT COMPONENTS
-import AuthScreen from "../AuthScreen/AuthScreen";
-
-// LOGIN COMPONENT
-function Login({ onLogin, onLoading, loggedIn }) {
-  // HOOKS
-  const { values, errors, isFormValid, onChange } = useFormWithValidation();
-
-  // HANDLER SUBMIT
-  function handleSubmit(e) {
-    e.preventDefault();
-    onLogin(values);
+  function handleSubmit(evt) {
+    evt.preventDefault()
+    handleLogin(values.email, values.password,  resetForm)
   }
 
-  return loggedIn ? (
-    <Navigate to="/" replace />
-  ) : (
-    <main className="login">
-      <AuthScreen
-        title="Рады видеть!"
-        name="login"
-        onSubmit={handleSubmit}
-        isFormValid={isFormValid}
-        buttonText={onLoading ? "Вход..." : "Войти"}
-      >
-        <label className="form__input-wrapper">
-          E-mail
-          <input
-            className={`form__input ${
-              errors.email ? "form__input_style_error" : ""
-            }`}
-            type="text"
-            name="email"
-            form="login"
-            required
-            id="email-input"
-            disabled={onLoading ? true : false}
-            onChange={onChange}
-            value={values.email || ""}
-          />
-          <span
-            className={`form__input-error ${
-              errors.email ? "form__input-error_active" : ""
-            }`}
-          >
-            {errors.email || ""}
-          </span>
-        </label>
-        <label className="form__input-wrapper">
-          Пароль
-          <input
-            className={`form__input ${
-              errors.password ? "form__input_style_error" : ""
-            }`}
-            type="password"
-            name="password"
-            form="login"
-            required
-            minLength="6"
-            maxLength="30"
-            disabled={onLoading ? true : false}
-            id="password-input"
-            onChange={onChange}
-            value={values.password || ""}
-          />
-          <span
-            className={`form__input-error ${
-              errors.password ? "form__input-error_active" : ""
-            }`}
-          >
-            {errors.password || ""}
-          </span>
-        </label>
-      </AuthScreen>
-    </main>
+  return (
+    <LoginRegistrationForm
+      nameForm='signin'
+      title='Рады видеть!'
+      nameButton='Войти'
+      isValid={isValid}
+      onSubmit={handleSubmit}
+      onChange={handleChange}
+      
+    >
+    <fieldset className="form__input form__input_loginForm">
+      <Input
+        nameinput='signin'
+        name='email'
+        type='email'
+        title='E-mail'
+        value={values.email}
+        isInputValid={isInputValid.email}
+        error={errors.email}
+        minLength="2"
+        maxLength="40"
+        id="email"
+        onChange={handleChange}
+        placeholder='Введите электронную почту'
+        pattern={EmailReg}
+      />
+      <Input
+        nameinput='signin'
+        name='password'
+        type='password'
+        title='Пароль'
+        value={values.password}
+        isInputValid={isInputValid.password}
+        error={errors.password}
+        minLength = '3'
+        maxLength='20'
+        id="contact-password"
+        placeholder='Введите пароль'
+        onChange={handleChange}
+      />
+      </fieldset>
+  </LoginRegistrationForm>
   );
 }
 
 export default Login;
+

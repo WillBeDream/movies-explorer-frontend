@@ -1,329 +1,299 @@
-// IMPORT PACKAGES
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import useNotification from "../../hooks/useNotification";
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import './App.css';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
+import Main from '../Main/Main';
+import { useEffect, useState } from 'react';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
+import HeaderPopup from '../HeaderPopup/HeaderPopup';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import { addMovie, autorize, deleteMovie, getMovies, getUserInfo, register, setUserInfo } from '../../utils/MainApi'
+import Preloader from '../Preloader/Preloader';
 
-// IMPORT STYLES
-import "./App.css";
-
-// IMPORT COMPONENTS
-import AppLayout from "../AppLayout/AppLayout";
-import Main from "../Main/Main";
-import Movies from "../Movies/Movies";
-import SavedMovies from "../SavedMovies/SavedMovies";
-import HamburgerMenu from "../HamburgerMenu/HamburgerMenu";
-import Profile from "../Profile/Profile";
-import Login from "../Login/Login";
-import Registr from "../Register/Register";
-import NotFound from "../NotFound/NotFound";
-import Preloader from "../Preloader/Preloader";
-import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-
-// IMPORT CONTEXT
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-
-// IMPORT API'S
-import * as mainApi from "../../utils/mainApi";
-import * as moviesApi from "../../utils/moviesApi";
-
-// IMPORT VARIABLES
-import { MOVIES_API_URL } from "../../utils/constants";
-
-// APP COMPONENT
 function App() {
-  // HOOKS
-  const [currentUser, setCurrentUser] = useState({});
-  const [loggedInn, setLoggedIn] = useState(false);
-  const [savedCards, setSavedCards] = useState([]);
-  const [isSideMenuOpen, setSideMenuStatus] = useState(false);
-  const [isLoading, setLoading] = useState(false);
-  const [isPreloaderActive, setPreloaderClass] = useState(true);
-  const aboutClickRef = useRef(null);
-  const navigate = useNavigate();
-  const dispatch = useNotification();
   
-  async function handleUserUpdate({ email, name }) {
-    setLoading(true);
-    try {
-      const userData = await mainApi.updateUserInfo({ email, name });
-      if (userData) {
-        setCurrentUser(userData);
-        dispatch({
-          type: "SUCCESS",
-          title: "Выполнено",
-          message: "Профиль успешно обновлён",
-        });
-      }
-    } catch (err) {
-      dispatch({
-        type: "ERROR",
-        title: "Ошибка",
-        message: `${err}`,
-      });
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const [isSending, setIsSending] = useState(false)
+  const [isCheckToken, setIsCheckToken] = useState(true)
+  const [currentUser, setCurrentUser] = useState({})
+  const [isOpenEdit, setIsOpenEdit] = useState(false)
+  const [saveMovies, setSaveMovies] = useState(false)
+  const [isErrorAll, setIsErrorAll] = useState(false)
+  const [isSuccessful, setIsSuccessful] = useState(false)
+  const [errorNoSavedMovie, setErrorNoSavedMovie] = useState(false)
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+
+  function handleBurgerClick() {
+    setIsOpen(true)
   }
 
-  async function handleUserRegistration({ password, email, name }) {
-    setLoading(true);
-    try {
-      const userData = await mainApi.register({ password, email, name });
-      if (userData) {
-        handleUserAuthorization({ email, password });
-        navigate("/movies", { replace: true });
-      }
-    } catch (err) {
-      dispatch({
-        type: "ERROR",
-        title: "Ошибка",
-        message: `${err}`,
-      });
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+  function handleCloseClick() {
+    setIsOpen(false)   
   }
 
-  async function handleUserAuthorization({ email, password }) {
-    setLoading(true);
-    try {
-      const userData = await mainApi.authorize({ email, password });
-      if (userData) {
-        setLoggedIn(true);
-        navigate("/movies", { replace: true });
-      }
-    } catch (err) {
-      dispatch({
-        type: "ERROR",
-        title: "Ошибка",
-        message: `${err}`,
-      });
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+  function handleButtonEditClick(evt) {
+    evt.preventDefault()
+    setIsOpenEdit(true)
   }
-
-  async function handleUserLogOut() {
-    try {
-      const data = await mainApi.logout();
-      if (data) {
-        setLoggedIn(false);
-        setCurrentUser({});
-        setSavedCards([]);
-        localStorage.clear();
-        navigate("/", { replace: true });
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  const handleUserLoginCheck = useCallback(async () => {
-    try {
-      const userData = await mainApi.getUserInfo();
-      if (userData) {
-        setLoggedIn(true);
-        setCurrentUser(userData);
-        navigate("/movies", { replace: true });
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setPreloaderClass(false);
-    }
-  }, []);
-
-  
-  async function handleGetAllMovies() {
-    setLoading(true);
-    try {
-      const moviesData = await moviesApi.getCards();
-      if (moviesData) {
-        return moviesData;
-      }
-    } catch (err) {
-      dispatch({
-        type: "ERROR",
-        title: "Ошибка",
-        message: `Во время запроса произошла ошибка. Возможно, 
-        проблема с соединением или сервер недоступен. Подождите 
-        немного и попробуйте ещё раз`,
-      });
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  
-  const handleGetUserMoviesCards = useCallback(async () => {
-    try {
-      const moviesData = await mainApi.getCardsByOwner();
-      if (moviesData) {
-        setSavedCards(moviesData);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
-
  
-  
-  async function handleSaveMovie(movie) {
-    try {
-      const movieData = await mainApi.createMovieCard({
-        country: movie.country,
-        director: movie.director,
-        duration: movie.duration,
-        year: movie.year,
-        description: movie.description,
-        image: `${MOVIES_API_URL}${movie.image.url}`,
-        trailerLink: movie.trailerLink,
-        thumbnail: `${MOVIES_API_URL}${movie.image.formats.thumbnail.url}`,
-        movieId: movie.id,
-        nameRU: movie.nameRU,
-        nameEN: movie.nameEN,
-      });
-      if (movieData) {
-        setSavedCards([movieData, ...savedCards]);
+  function handleDeleteMovie(movieId) {
+    deleteMovie(movieId, localStorage.token)
+     .then(() => {
+       setSaveMovies(saveMovies.filter(movie => { return movie._id !== movieId }))
+     })
+     .catch((err) => console.error('Ошибка. Удалить фильм не получилось' , err))
+ }
+ 
+  function handleMovieLike(movie)  {
+    const isSaved = saveMovies.some((item) => (movie.id + 200) === item.movieId);
+    if (isSaved) {
+      const updatedMovies = saveMovies.filter(item => item.movieId === (movie.id + 200));
+      handleDeleteMovie(updatedMovies[0]._id)
+      if (updatedMovies.length === 0) {
+        setErrorNoSavedMovie(true)
+      } else {
+        setErrorNoSavedMovie(false)
       }
-    } catch (err) {
-      console.error(err);
+    } else {
+      addMovie(movie, localStorage.token)
+        .then(res => {
+          setSaveMovies([res, ...saveMovies]);
+          setErrorNoSavedMovie(false)
+        })
+        .catch((err) => {
+          console.log('Ошибка. Сохранить фильм не получилось: ', err);
+        });
     }
+  };
+
+  useEffect(() => {
+
+    if (localStorage.token) {
+      Promise.all([getUserInfo(localStorage.token), getMovies(localStorage.token)])
+        .then(([dataUserInfo, dataInitialSavedMovie]) => {
+          setCurrentUser(dataUserInfo)
+          setIsLoggedIn(true)
+          setIsCheckToken(false)
+          setSaveMovies(dataInitialSavedMovie.reverse())
+          if (dataInitialSavedMovie.length === 0) {
+            setErrorNoSavedMovie(true)
+          } else {
+            setErrorNoSavedMovie(false)
+          }
+    })
+    .catch((err) => {
+      console.log('Ошибка. Начальные данные не созданы: ', err);
+      setIsCheckToken(false)
+      localStorage.clear()
+    });
+  } else {
+      setIsLoggedIn(false)
+      setIsCheckToken(false)
+    }
+  }, [isLoggedIn])
+  
+  function handleLogin(email, password, resetForm) {
+    setIsSending(true)
+    autorize(email, password)
+    .then(res => {
+      localStorage.setItem('token', res.token)
+      setIsLoggedIn(true)
+      resetForm({ email: '', password: '' })
+      window.scrollTo(0, 0)
+      navigate('/movies')
+    })
+    .catch((err) => {
+      console.log('Ошибка. Войти не получилось: ', err);
+    })
+    .finally(() => 
+    setIsSending(false))
   }
 
-  
-  async function handleDeleteMovie(movie) {
-    const savedMovie = savedCards.find(
-      (card) => card.movieId === movie.id || card.movieId === movie.movieId
-    );
-    try {
-      const data = await mainApi.deleteCard(savedMovie._id);
-      if (data) {
-        setSavedCards((state) =>
-          state.filter((card) => card._id !== savedMovie._id)
-        );
+  function handleRegister(username, email, password, resetForm) {
+    setIsSending(true)
+    register(username, email, password)
+    .then((res) => {
+      if (res) {
+        handleLogin(email, password, resetForm)
+        setIsErrorAll(false)
       }
-    } catch (err) {
-      dispatch({
-        type: "ERROR",
-        title: "Ошибка",
-        message: `${err}`,
-      });
-      console.error(err);
-    }
+    })
+    .catch((err) => {
+      setIsErrorAll(true)
+      console.log('Ошибка. Зарегистрировать пользователя на сервере не получилось: ', err);
+    })
+    .finally(() => setIsSending(false))
   }
 
-  
   useEffect(() => {
-    handleUserLoginCheck();
-  }, [loggedInn, handleUserLoginCheck]);
-
-  
-  useEffect(() => {
-    if (loggedInn) {
-      handleGetUserMoviesCards();
+    if ((pathname === 'saved-movies' || saveMovies.length === 0)) {
+      setErrorNoSavedMovie(true)
+    } else {
+      setErrorNoSavedMovie(false)
     }
-  }, [loggedInn, handleGetUserMoviesCards]);
-
-  
-  function handleOpenSideMenu() {
-    setSideMenuStatus(!isSideMenuOpen);
+  }, [pathname, saveMovies.length])
+   
+  function handleUpdateUser(username, email) {
+    setIsSending(true)
+    setUserInfo(username, email, localStorage.token)
+      .then(res => {
+        setIsSuccessful(true)
+        setCurrentUser(res)
+        setTimeout(() => {
+          setIsOpenEdit(false);
+          setIsSuccessful(false)
+        }, 2000);
+      })
+      .catch((err) => {
+        console.log('Ошибка. Обновить данные пользователя на сервере не получилось: ', err);
+        setIsErrorAll(true)
+        setTimeout(() => {
+          setIsOpenEdit(false);
+          setIsErrorAll(false)
+        }, 2000);
+      })
+      .finally(() => setIsSending(false))
   }
-
   
-  function handleCloseSideMenu() {
-    setSideMenuStatus(false);
-  }
-
+    function outOfAccount() {
+      localStorage.clear()
+      setIsLoggedIn(false)
+      navigate('/')
+    }
+     
   return (
-    <div className="app__content">
-      {isPreloaderActive ? (
-        <Preloader />
-      ) : (
-        <CurrentUserContext.Provider value={currentUser}>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <AppLayout
-                  onHamburgerClick={handleOpenSideMenu}
-                  loggedIn={loggedInn}
-                />
-              }
-            >
-              <Route index element={<Main aboutRef={aboutClickRef} />} />
-              <Route
-                path="/movies"
-                element={
-                  <ProtectedRoute
-                    element={Movies}
-                    savedCards={savedCards}
-                    onSearch={handleGetAllMovies}
-                    onCardSave={handleSaveMovie}
-                    onCardDelete={handleDeleteMovie}
-                    isLoading={isLoading}
-                    loggedIn={loggedInn}
-                  />
-                }
+
+    <div className="App">
+      {isCheckToken ? <Preloader /> :
+      <CurrentUserContext.Provider value = {currentUser}>
+
+      <Routes>
+        <Route path='/' element={
+          <>
+            <Header 
+              nameHeader='home'  isLoggedIn={isLoggedIn}
+              onClick={handleBurgerClick}
               />
-              <Route
-                path="/saved-movies"
-                element={
-                  <ProtectedRoute
-                    element={SavedMovies}
-                    savedCards={savedCards}
-                    onCardDelete={handleDeleteMovie}
-                    loggedIn={loggedInn}
-                  />
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute
-                    element={Profile}
-                    onUpdateUser={handleUserUpdate}
-                    onLogout={handleUserLogOut}
-                    onLoading={isLoading}
-                    loggedIn={loggedInn}
-                  />
-                }
-              />
-            </Route>
-            <Route
-              path="/signin"
-              element={
-                <Login
-                  onLogin={handleUserAuthorization}
-                  onLoading={isLoading}
-                  loggedIn={loggedInn}
-                />
-              }
+            <Main 
+              name='mainHomePage' />
+            <HeaderPopup 
+              isOpen={isOpen}
+              onClose={handleCloseClick}
+              setIsOpen={setIsOpen}
             />
-            <Route
-              path="/signup"
-              element={
-                <Registr
-                  onRegistr={handleUserRegistration}
-                  onLoading={isLoading}
-                  loggedIn={loggedInn}
-                />
-              }
-            />
-            <Route path="/*" element={<NotFound />} />
-          </Routes>
-          <HamburgerMenu
-            isSideMenuOpen={isSideMenuOpen}
-            onClose={handleCloseSideMenu}
-          />
-        </CurrentUserContext.Provider>
-      )}
+            <Footer />
+          </>
+        }/>
+                  
+      <Route path='/profile' element={
+        <ProtectedRoute 
+          isLoggedIn={isLoggedIn}
+         
+          element={
+            <>
+              <Header
+                nameHeader='profile'
+                onClick={handleBurgerClick}
+              />
+              <Main
+                name='mainProfile' 
+                handleButtonEditClick={handleButtonEditClick}
+                isOpenEdit={isOpenEdit}
+                setIsOpenEdit={setIsOpenEdit}
+                handleUpdateUser={handleUpdateUser}
+                outOfAccount={outOfAccount}
+                isSuccessful={isSuccessful}
+                isErrorAll={isErrorAll}
+              />
+              <HeaderPopup 
+                isOpen={isOpen}
+                onClose={handleCloseClick}
+                setIsOpen={setIsOpen}
+              />
+            </> 
+          }
+        />
+      }/>   
+
+      <Route path='/movies' element={
+        <ProtectedRoute 
+          isLoggedIn={isLoggedIn}
+          element={
+            <>
+              <Header 
+                nameHeader = 'movies'
+                onClick={handleBurgerClick}
+              />
+              <Main
+                name='mainMovies'
+                saveMovies={saveMovies}
+                handleMovieLike={handleMovieLike}
+              />
+              <Footer />
+              <HeaderPopup 
+                isOpen={isOpen}
+                onClose={handleCloseClick}
+                setIsOpen={setIsOpen}
+              />
+            </>
+          }
+        />
+      }/>  
+
+      <Route path='/saved-movies' element={
+        <ProtectedRoute 
+          isLoggedIn={isLoggedIn}
+          element={
+            <>
+              <Header 
+                nameHeader = 'saved-movies'
+                onClick={handleBurgerClick}
+              />
+              <Main
+                name='mainSavedMovies' 
+                saveMovies={saveMovies}
+                handleDeleteMovie={handleDeleteMovie}
+                errorNoSavedMovie={errorNoSavedMovie}
+              />
+              <Footer />
+              <HeaderPopup 
+                isOpen={isOpen}
+                onClose={handleCloseClick}
+                setIsOpen={setIsOpen}
+              />
+            </>
+          }
+        />
+      }/>   
+
+      <Route path='/signup' element={
+        isLoggedIn ? <Navigate to='/movies' replace /> :
+          <Main
+            name='mainSignUp'
+            handleRegister={handleRegister}
+            isErrorAll={isErrorAll}
+          /> 
+      } />     
+
+      <Route path='signin' element={
+        isLoggedIn ? <Navigate to='/movies' replace /> :
+        <Main
+          name='mainSignIn'
+          handleLogin={handleLogin}
+        />   
+      }/>  
+
+      <Route path='*' element={
+        <Main name='pageNotFound' />
+      } />
+            
+      </Routes>
+      </CurrentUserContext.Provider> 
+    }     
     </div>
-  );
+  )
 }
 
 export default App;

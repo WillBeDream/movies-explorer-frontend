@@ -1,35 +1,17 @@
-// IMPORT STYLES
-import "./Promo.css";
+import './Promo.css';
+import { HashLink } from 'react-router-hash-link'
 
-// IMPORT IMAGES
-import hero from "../../images/hero-logo.svg";
-
-// IMPORT UTILS
-import { handleScrollEffect } from "../../utils/utils";
-
-// PROMO COMPONENT
-function Promo({ aboutRef }) {
+function Promo() {
   return (
     <section className="promo">
-      <div className="promo__text-wrapper">
-        <h1 className="promo__title">
-          Учебный проект студента факультета Веб&#8209;разработки.
-        </h1>
-        <p className="promo__text">
-          Листайте ниже, чтобы узнать больше про этот проект и&nbsp;его
-          создателя.
-        </p>
-        <button
-          className="promo__btn-anchor hover-button"
-          type="button"
-          onClick={() => handleScrollEffect(aboutRef)}
-        >
-          Узнать больше
-        </button>
+      <div className="promo__conteiner">
+        <h1 className="promo__title">Учебный проект студента факультета Веб&#8209;разработки.</h1>
+        <p className="promo__subtitle">Листайте ниже, чтобы узнать больше про этот проект и его создателя.</p>
+        <HashLink smooth to='#aboutProject' className="promo__link" href="#about-project">Узнать больше</HashLink>
       </div>
-      <img className="promo__img" src={hero} alt="земной шар" />
+      <div className="promo__logo"></div>
     </section>
-  );
+  )
 }
 
 export default Promo;

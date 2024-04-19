@@ -1,115 +1,72 @@
-// IMPORT PACKAGES
-import { Navigate } from "react-router-dom";
-import useFormWithValidation from "../../hooks/useFormWithValidation";
+import LoginRegistrationForm from "../LoginRegistrationForm/LoginRegistrationForm";
+import useFormValidation from "../../hooks/useFormValidation";
+import './Register.css';
+import Input from "../Input/Input";
+import { EmailReg } from "../../utils/constants";
 
-// IMPORT STYLES
-import "./Register.css";
+function Register({ handleRegister, isErrorAll }) {
+  const { values, errors, isValid, isInputValid, handleChange, resetForm } = useFormValidation()
 
-// IMPORT COMPONENTS
-import AuthScreen from "../AuthScreen/AuthScreen";
-
-// IMPORT VARIABLES
-import { USER_NAME_REG_EXP } from "../../utils/constants";
-
-// LOGIN COMPONENT
-function Registr({ onRegistr, onLoading, loggedIn }) {
-  // HOOKS
-  const { values, errors, isFormValid, onChange } = useFormWithValidation();
-
-  // HANDLER SUBMIT
-  function handleSubmit(e) {
-    e.preventDefault();
-    onRegistr(values);
+  function handleSubmit(evt) {
+    evt.preventDefault()
+    handleRegister(values.username, values.email, values.password, resetForm)
   }
-
-  return loggedIn ? (
-    <Navigate to="/" replace />
-  ) : (
-    <main className="registr">
-      <AuthScreen
-        title="Добро пожаловать!"
-        name="registr"
-        onSubmit={handleSubmit}
-        isFormValid={isFormValid}
-        buttonText={onLoading ? "Регистрация..." : "Зарегистрироваться"}
-      >
-        <label className="form__input-wrapper">
-          Имя
-          <input
-            className={`form__input ${
-              errors.name && "form__input_style_error"
-            }`}
-            type="text"
-            name="name"
-            form="registr"
-            required
-            minLength="2"
-            maxLength="30"
-            pattern={USER_NAME_REG_EXP}
-            disabled={onLoading ? true : false}
-            id="name-input"
-            onChange={onChange}
-            value={values.name || ""}
-          />
-          <span
-            className={`form__input-error ${
-              errors.name ? "form__input-error_active" : ""
-            }`}
-          >
-            {errors.name || ""}
-          </span>
-        </label>
-        <label className="form__input-wrapper">
-          E-mail
-          <input
-            className={`form__input ${
-              errors.email ? "form__input_style_error" : ""
-            }`}
-            type="text"
-            name="email"
-            form="registr"
-            required
-            disabled={onLoading ? true : false}
-            id="email-input"
-            onChange={onChange}
-            value={values.email || ""}
-          />
-          <span
-            className={`form__input-error ${
-              errors.email ? "form__input-error_active" : ""
-            }`}
-          >
-            {errors.email || ""}
-          </span>
-        </label>
-        <label className="form__input-wrapper">
-          Пароль
-          <input
-            className={`form__input ${
-              errors.password ? "form__input_style_error" : ""
-            }`}
-            type="password"
-            name="password"
-            form="registr"
-            required
-            minLength="6"
-            maxLength="30"
-            disabled={onLoading ? true : false}
-            id="password-input"
-            onChange={onChange}
-            value={values.password || ""}
-          />
-          <span
-            className={`form__input-error ${
-              errors.password ? "form__input-error_active" : ""
-            }`}
-          >
-            {errors.password || ""}
-          </span>
-        </label>
-      </AuthScreen>
-    </main>
+  return (
+    <LoginRegistrationForm
+      nameForm='signup'
+      title='Добро пожаловать!'
+      nameButton='Зарегистрироваться'
+      isValid={isValid}
+      onSubmit={handleSubmit}
+      onChange={handleChange}
+      isErrorAll={isErrorAll}
+    >
+      <fieldset className="form__input form__input_registrationForm">
+        <Input
+          nameinput='signup'
+          name='username'
+          type='text'
+          title='Имя'
+          value={values.username}
+          isInputValid={isInputValid.username}
+          error={errors.username}
+          minLength="2"
+          maxLength="40"
+          id="username"
+          onChange={handleChange}
+          placeholder='Введите имя'
+        />
+        <Input
+          nameinput='signup'
+          name='email'
+          type='email'
+          title='E-mail'
+          value={values.email}
+          isInputValid={isInputValid.email}
+          error={errors.email}
+          id="email"
+          onChange={handleChange}
+          placeholder='Введите электронную почту'
+          pattern={EmailReg}
+        />
+        <Input
+          nameinput='signup'
+          name='password'
+          type='password'
+          title='Пароль'
+          value={values.password}
+          isInputValid={isInputValid.password}
+          error={errors.password}
+          minLength = '3' 
+          maxLength='20'
+          id="contact-password"
+          onChange={handleChange}
+          placeholder='Введите пароль'
+        />
+      </fieldset>
+    </LoginRegistrationForm>
   );
 }
 
-export default Registr;
+export default Register;
+
