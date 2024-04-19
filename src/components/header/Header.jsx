@@ -1,61 +1,51 @@
-// IMPORT PACKAGES
-import { Link, useLocation } from "react-router-dom";
+import './Header.css';
+import { Link } from 'react-router-dom';
+import logo from '../../images/header-logo.svg';
 
-// IMPORT STYLES
-import "./Header.css";
-
-// IMPORT COMPONENTS
-import Logo from "../Logo/Logo";
-import Navigation from "../Navigation/Navigation";
-import AccountLink from "../AccountLink/AccountLink";
-
-// HEADER COMPONENT
-function Header({ onHamburgerClick, loggedIn }) {
-  // HOOKS
-  const location = useLocation();
-
+function Header({ nameHeader, isLoggedIn, onClick }) {
+  
   return (
-    <header className="header">
-      {loggedIn ? (
-        <div
-          className={`header__wrapper ${
-            location.pathname === "/" ? "header__wrapper_bg-color_hero" : ""
-          }`}
-        >
-          <Logo />
-          <Navigation />
-          <AccountLink />
-          <button
-            className="header__btn-hamburger hover-button"
-            type="button"
-            aria-label="Меню навигации"
-            onClick={onHamburgerClick}
-          ></button>
-        </div>
-      ) : (
-        <div className="header__wrapper header__wrapper_bg-color_hero">
-          <Logo />
-          <nav className="header__menu">
-            <ul className="header__menu-wrapper">
-              <li className="header__menu-item">
-                <Link to="/signup" className="header__link hover-link">
-                  Регистрация
-                </Link>
-              </li>
-              <li className="header__menu-item">
-                <Link
-                  to="/signin"
-                  className="header__link header__link_type_login hover-button"
-                >
-                  Войти
-                </Link>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      )}
+    <header 
+    className={nameHeader === "movies" || nameHeader === "saved-movies" || nameHeader === "profile" ?
+      "header indent" : "header header_themeBlue indent"}>
+           
+      <Link to={'/'} 
+        className="header__logo"><img className="header__img" src={logo} alt="логотип сайта"/></Link>
+      
+      <ul 
+        className="header__navigation">
+          <li>
+            <Link to={'/movies'} className={nameHeader === "movies" || nameHeader === "profile" ? 
+              "header__films header__films_bold" : nameHeader === "saved-movies" ? "header__films" : nameHeader === 'home' && isLoggedIn ? 
+              "header__films header__films_in" : "header__films header__none"}>Фильмы</Link></li>
+          <li>
+            <Link to={'/saved-movies'} className={nameHeader === "movies" || nameHeader === "profile" ? 
+             "header__films-save" : nameHeader === 'home' && isLoggedIn ? "header__films-save header__films-save_in" : nameHeader === "saved-movies" ?
+             "header__films-save header__filmsfilms-save_bold" : "header__films-save header__none"}>Сохранённые фильмы</Link></li>
+        </ul>
+     
+        <Link to={'/profile'} className={nameHeader === "movies" || nameHeader === "saved-movies" || nameHeader === "profile" ? 
+          "header__linkAcc" : nameHeader === 'home' && isLoggedIn ? "header__linkAcc header__linkAcc_in" : "header__none"}>Аккаунт <div className='header__account'>
+            </div></Link>
+     
+
+      <ul 
+      className={nameHeader === "movies" || nameHeader === "saved-movies" || nameHeader === "profile" ? 
+        "header__loginRegistration header__none" : nameHeader === 'home' && isLoggedIn ? "header__loginRegistration header__none" : "header__loginRegistration"}>
+          <li>
+            <Link to={'/signup'} className="header__registration">Регистрация
+            </Link>
+            </li>
+          <li>
+            <Link to={'/signin'} className="header__login link">Войти</Link>
+          </li>
+      </ul>
+
+      <button type='button' 
+      className={nameHeader === 'home' && isLoggedIn ? "header__burger header__burger_white" : nameHeader === "home" ?
+       "header__burger header__burger_close" : "header__burger"} 
+      onClick={onClick}></button>
     </header>
   );
 }
-
-export default Header;
+export default Header

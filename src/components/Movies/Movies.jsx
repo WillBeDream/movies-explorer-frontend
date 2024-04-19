@@ -1,147 +1,123 @@
-// IMPORT PACKAGES
-import { useCallback, useState, useEffect } from "react";
-import useResizeScreen from "../../hooks/useResizeScreen";
+import SearchFilms from '../SearchFilms/SearchFilms';
+import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import MoviesApi from '../../utils/MoviesApi';
+import { useCallback, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
-// IMPORT STYLES
-import "./Movies.css";
-
-// IMPORT COMPONENTS
-import SearchForm from "../SearchForm/SearchForm";
-import MoviesCardList from "../MoviesCardList/MoviesCardList";
-
-// IMPORT UTILS
-import { handleMovieFiltering, handleMovieSearch } from "../../utils/utils";
-
-// IMPORT CONFIGS
-import { CARDS_PARAMS_RENDER } from "../../utils/config";
-
-//MOVIES COMPONENT
-function Movies({ savedCards, onSearch, onCardSave, onCardDelete, isLoading }) {
-  // HOOKS
-  const [initialCards, setInitialCards] = useState([]);
-  const [cardsForRender, setCardsForRender] = useState([]);
-  const [foundCards, setFoundCards] = useState([]);
-  const [isFilterOn, setFilter] = useState(false);
-  const [isCardsNotFound, setCardsNotFound] = useState(false);
-  const [cardsRenderParams, setCardsRenderParams] = useState({});
-  const [isSearching, setIsSearching] = useState(false);
-  const screenWidth = useResizeScreen();
-
-  // HANDLER SEARCH AND FILTERING MOVIES
-  const handleSearchAndFiltering = useCallback(
-    (cards, searchQuery) => {
-      const found = handleMovieSearch(cards, searchQuery, false);
-      setFoundCards(found);
-      if (!found.length) {
-        setCardsNotFound(true);
-        setIsSearching(false);
-        setCardsForRender(found);
-      } else {
-        const filtered = handleMovieFiltering(found, isFilterOn, false);
-        setIsSearching(false);
-        setCardsForRender(filtered);
-        if (!filtered.length) {
-          setIsSearching(false);
-          setCardsNotFound(true);
+function Movies({ saveMovies, handleMovieLike }) {
+  const [downloadedMovies, setDownloadedMovies] = useState([]) // все фильмы, загруженные с beatfilm-movies.
+  const [isSearchFilms, setIsSearchFilms] = useState('')  // текст в строке поиска фильмов.
+  const [isChecked, setIsChecked] = useState(false); // состояние чекбокса.
+  const [isLoadingMovies, setIsLoadingMovies] = useState(false) // прелоадер при загрузке фильмов.
+  const [errorNoMovie, setErrorNoMovie] = useState(false) // вывод ошибки сервера при отсутствии фильма по запросу.
+  const [errorMoviesFirst, setErrorMoviesFirst] = useState(false)// вывод ошибки сервера при первой загрузке фильмов.
+  const [selectedFilms, setSelectedFilms] = useState([]) //отобранные фильмы по строке поиска и чекбоксу
+  const [inputValue, setInputValue] = useState("");
+  const [isValidSearch, setIsValidSearch] = useState(true)
+  const { pathname } = useLocation();
+  
+    const selectionOfFilms = useCallback((input, isChecked, movies) => {
+      setIsSearchFilms(input)
+      localStorage.setItem('searchfilms', JSON.stringify(input))
+      localStorage.setItem('checkbox', JSON.stringify(isChecked))
+      localStorage.setItem('downloadedmovies', JSON.stringify(movies))
+      setSelectedFilms(movies.filter((item) => {
+        const searchName = item.nameRU.toLowerCase().includes(input.toLowerCase())
+        if (isChecked) {
+          return searchName && item.duration <= 40;
+        } else {
+          return searchName;
         }
-      }
-    },
-    [isFilterOn]
-  );
+      }))
 
-  // HANDLER ON SEARCH SUBMIT
-  const handleOnSearchSubmit = useCallback(
-    async (searchQuery) => {
-      setCardsNotFound(false);
-      setIsSearching(true);
-      if (!initialCards.length) {
-        const moviesData = await onSearch();
-        if (moviesData) {
-          setInitialCards(moviesData);
-          handleSearchAndFiltering(moviesData, searchQuery);
-        }
+      if (selectedFilms.length === 0) {
+        setErrorNoMovie(true)
       } else {
-        handleSearchAndFiltering(initialCards, searchQuery);
+        setErrorNoMovie(false)
       }
-    },
-    [handleSearchAndFiltering, initialCards, onSearch]
-  );
+    }, [selectedFilms.length])
 
-  // HANDLER FILTER MOVIES
-  const handleOnFilterClick = useCallback(
-    (isChecked) => {
-      setFilter(isChecked);
-      setCardsNotFound(false);
-      const filtered = handleMovieFiltering(foundCards, isChecked, false);
-      setCardsForRender(filtered);
-      if (!filtered.length) {
-        setCardsNotFound(true);
-      }
-    },
-    [foundCards]
-  );
-
-  // SET THE CARD RENDER PARAMETERS DEPENDING ON THE SCREEN WIDTH
-  useEffect(() => {
-    if (screenWidth >= CARDS_PARAMS_RENDER.base.width) {
-      setCardsRenderParams(CARDS_PARAMS_RENDER.base.cards);
-    } else if (
-      screenWidth < CARDS_PARAMS_RENDER.base.width &&
-      screenWidth >= CARDS_PARAMS_RENDER.desktop.width
-    ) {
-      setCardsRenderParams(CARDS_PARAMS_RENDER.desktop.cards);
-    } else if (
-      screenWidth < CARDS_PARAMS_RENDER.desktop.width &&
-      screenWidth >= CARDS_PARAMS_RENDER.tablet.width
-    ) {
-      setCardsRenderParams(CARDS_PARAMS_RENDER.tablet.cards);
-    } else {
-      setCardsRenderParams(CARDS_PARAMS_RENDER.mobile.cards);
+    function searchForMoviesFirst(input) {
+      setIsLoadingMovies(true)
+      MoviesApi.getMovies()
+        .then((res) => {
+          setDownloadedMovies(res)
+          selectionOfFilms(input, isChecked, res)
+        })
+        .catch(err => {
+          setErrorMoviesFirst(true)
+          console.log('Ошибка. Поиск фильмов завершился неудачей: ', err);
+        })
+        .finally(() => setIsLoadingMovies(false))
     }
-  }, [screenWidth]);
 
-  // DEPENDENCIES ON THE RENDERING OF MOVIE CARDS
-  useEffect(() => {
-    if (
-      localStorage.getItem("foundMovies") &&
-      localStorage.getItem("isMoviesFilterOn")
-    ) {
-      const filter = JSON.parse(localStorage.getItem("isMoviesFilterOn"));
-      setFilter(filter);
-      const foundMovies = JSON.parse(localStorage.getItem("foundMovies"));
-      setFoundCards(foundMovies);
-      if (!foundMovies.length) {
-        setCardsNotFound(true);
-        setCardsForRender(foundMovies);
-      } else {
-        const filtered = handleMovieFiltering(foundMovies, filter, false);
-        setCardsForRender(filtered);
-        if (!filtered.length) {
-          setCardsNotFound(true);
+      function searchForMovies(input, isChecked, downloadedMovies) {
+        if (localStorage.downloadedmovies && localStorage.searchfilms && localStorage.checkbox) {
+           selectionOfFilms(input, isChecked, downloadedMovies)
+           
+        } else {
+          searchForMoviesFirst(input)
         }
+    }
+
+    function handleInputChange(evt) {
+      setInputValue(evt.target.value);
+      setIsValidSearch(true)
+    }
+
+    useEffect(() => {
+      if (pathname === '/movies')
+      setInputValue(isSearchFilms);
+    }, [isSearchFilms, pathname])
+  
+    useEffect(() => {
+      if (localStorage.downloadedmovies && localStorage.searchfilms && localStorage.checkbox) {
+          const search = JSON.parse(localStorage.searchfilms)
+          const checked = JSON.parse(localStorage.checkbox)
+          const movies = JSON.parse(localStorage.downloadedmovies)
+          setDownloadedMovies(movies)
+          setIsSearchFilms(search)
+          setIsChecked(checked)
+          selectionOfFilms(search, checked, movies)
+        }
+    }, [isChecked, setDownloadedMovies, selectionOfFilms])
+
+    function searchForMoviescheckbox() {
+      if(inputValue) {
+        if (isChecked) {
+          setIsChecked(false)
+          selectionOfFilms(inputValue, false, downloadedMovies)
+        } else {
+          setIsChecked(true)
+          selectionOfFilms(inputValue, true, downloadedMovies)
+        } 
+      } else {
+          setIsValidSearch(false)
       }
     }
-  }, []);
-
+       
   return (
-    <main className="movies">
-      <SearchForm
-        onSearch={handleOnSearchSubmit}
-        onFilterChange={handleOnFilterClick}
-        isFilterOn={isFilterOn}
-        isSearching={isSearching}
-      />
-      <MoviesCardList
-        cards={cardsForRender}
-        savedCards={savedCards}
-        cardsRenderParams={cardsRenderParams}
-        isCardsNotFound={isCardsNotFound}
-        onCardSave={onCardSave}
-        onCardDelete={onCardDelete}
-        isLoading={isLoading}
-      />
-    </main>
-  );
+    <>
+        <SearchFilms
+          downloadedMovies={downloadedMovies}
+          searchForMovies={searchForMovies}
+          isChecked={isChecked}
+          isSearchFilms={isSearchFilms}
+          searchForMoviescheckbox={searchForMoviescheckbox}
+          selectionOfFilms={selectionOfFilms}
+          saveMovies={saveMovies}
+          handleInputChange={handleInputChange}
+          isValidSearch={isValidSearch}
+        />
+        <MoviesCardList
+          movies={selectedFilms} 
+          handleMovieLike={handleMovieLike}
+          errorNoMovie={errorNoMovie}
+          saveMovies={saveMovies}
+          errorMoviesFirst={errorMoviesFirst}
+        />
+      </> 
+  )
 }
 
 export default Movies;

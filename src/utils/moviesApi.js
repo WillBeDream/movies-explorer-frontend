@@ -1,7 +1,21 @@
-import { makeRequest } from "./utils";
+class MoviesApi {
+  constructor({baseUrl}) {
+    this._baseUrl = baseUrl;
+  }
 
-import { MOVIES_API_URL } from "./constants";
+  _checkResponse(res) {
+    return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
+  }
 
-export function getCards() {
-  return makeRequest(MOVIES_API_URL, "/beatfilm-movies", "GET");
-}
+  getMovies() {
+    return fetch(`${this._baseUrl}/`, {
+    })
+    .then(this._checkResponse)
+  };
+};
+
+const moviesApi = new MoviesApi({
+  baseUrl: 'https://api.nomoreparties.co/beatfilm-movies',
+});
+
+export default moviesApi;

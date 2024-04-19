@@ -1,91 +1,48 @@
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
+import './MoviesCard.css';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
-import "./MoviesCard.css";
+function MoviesCard({ data, src, handleDeleteMovie, handleMovieLike, saveMovies}) {
+  const { pathname } = useLocation();
+  const [isLiked, setIsLiked] = useState(false)
 
-import { convertDuration } from "../../utils/utils";
+  useEffect(() => {
+    if (pathname === '/movies')
+    setIsLiked(saveMovies.some(item => (data.id + 200) === item.movieId))
+  }, [saveMovies, setIsLiked, pathname, data.id])
 
-
-import { MOVIES_API_URL } from "../../utils/constants";
-
-// MOVIES CARD COMPONENT
-function MoviesCard({ card, isSaved, onCardSave, onCardDelete }) {
-  // HOOKS
-  const location = useLocation();
-
-  
-  function handleSaveClick() {
-    onCardSave(card);
+  function handleLikeClick() {
+    handleMovieLike(data)
+    setIsLiked(!isLiked);
   }
-
- 
   
-  function handleDeleteClick() {
-    onCardDelete(card);
+  function convertToTime(number) {
+    const hours = Math.floor(number / 60)
+    const minutes = number % 60
+    return (`${hours}ч ${minutes < 10 ? '0' : ''}${minutes}м`)
   }
-
+  
   return (
-    <li className="movies-card">
-      <a
-        className="movies-card__link hover-link"
-        href={card.trailerLink}
-        target="_blank"
-        rel="noreferrer"
-      >
-        <img
-          className="movies-card__img"
-          src={
-            location.pathname === "/movies"
-              ? `${MOVIES_API_URL}${card.image.url}`
-              : `${card.image}`
-          }
-          alt={`Постер фильма ${card.nameRU.trim()}`}
-        />
+    <li className="element__item">
+      <a className="element__link" href={data.trailerLink} target="_blank" rel="noreferrer">
+        <img className="element__foto" src={src} alt={data.nameRU} />
       </a>
-      <div className="movies-card__caption">
-        <p className="movies-card__name">{card.nameRU.trim()}</p>
-        {location.pathname === "/movies" ? (
-          <button
-            className="movies-card__btn-action hover-button"
-            type="button"
-            aria-label="Добавить в сохранённые фильмы"
-            onClick={isSaved ? handleDeleteClick : handleSaveClick}
-          >
-            <svg
-              className={`movies-card__btn-like-img ${
-                isSaved ? "movies-card__btn-like-img_active" : ""
-              }`}
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill="#fff"
-                d="M7.273 0C6.273 0 5.545.523 5 1.09 4.455.567 3.727 0 2.727 0 1.137 0 0 1.264 0 2.833c0 .785.318 1.482.91 1.962L5 8.5l4.09-3.705c.546-.523.91-1.177.91-1.962C10 1.264 8.864 0 7.273 0Z"
-              />
-            </svg>
-          </button>
-        ) : (
-          <button
-            className="movies-card__btn-action movies-card__btn-action_place_saved-movies"
-            type="button"
-            aria-label="Удалить фильм из сохранённых"
-            onClick={handleDeleteClick}
-          >
-            <svg
-              className="movies-card__btn-del-img"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill="#fff"
-                fillRule="evenodd"
-                d="m4 5.06 2.652 2.652 1.06-1.06L5.061 4l2.651-2.652-1.06-1.06L4 2.939 1.348.287.288 1.348 2.939 4 .287 6.652l1.061 1.06L4 5.061Z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
-        )}
-      </div>
-      <p className="movies-card__duration">{convertDuration(card.duration)}</p>
+      
+      <div className="element__info">
+        <h2 className="element__title">{data.nameRU}</h2>
+        <div className="element__save-del">
+        {pathname === '/movies' ?
+          <button className={`element__button element__button_likes ${isLiked ? 'element__button_likesActive' : ''}`} onClick={handleLikeClick} type="button" aria-label="лайк"  />
+        :
+          <button className="element__button element__button_delete" type="button" onClick={() => handleDeleteMovie(data._id)} aria-label="удалить"  />
+        }
+        </div>
+        </div>  
+        <span className='element__duration'>{convertToTime(data.duration)}</span>
+      
     </li>
-  );
+  )
 }
 
 export default MoviesCard;
